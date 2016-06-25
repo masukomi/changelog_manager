@@ -17,6 +17,15 @@ def ask_until_acceptable(message,
 	return ask_until_acceptable(message, valid_responses)
 end
 
+def ask_for_non_optional_input(message : String) : String
+	input = Readline.readline(message).to_s
+	if input.match(/^\s*$/)
+		puts "Please try again. That wasn't optional."
+		return ask_for_non_optional_input(message)
+	end
+	return input
+end
+
 class ChangelogEntry
 	def initialize(description : String,
 				   ticket      : String?,
@@ -54,9 +63,9 @@ change_type = change_types[
 3 - Added\n",
 						["1", "2", "3"]).to_i]
 
-ticket      = Readline.readline("Ticket ID?: ")
-url         = Readline.readline("Ticket URL?: ")
-description = Readline.readline("Describe your change: ").to_s
+ticket      = Readline.readline("Ticket ID? (optional): ")
+url         = Readline.readline("Ticket URL? (optional): ")
+description = ask_for_non_optional_input("Describe your change: ")
 # TODO support tags
 
 changelog_entry = ChangelogEntry.new(description,
