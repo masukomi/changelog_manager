@@ -1,6 +1,9 @@
+require "./changelog_manager/*"
+
 
 require "readline"
 require "json"
+require "changelog_entry"
 
 change_types = {
 	1 => "Fixed",
@@ -26,25 +29,7 @@ def ask_for_non_optional_input(message : String) : String
 	return input
 end
 
-class ChangelogEntry
-	def initialize(description : String,
-				   ticket      : String?,
-				   url         : String?,
-				   tags        : Array(String))
-		@description = description
-		@ticket      = ticket
-		@url         = url
-		@tags        = tags
-	end
-	
-	# the following lets us ingest and expel json
-	JSON.mapping({
-		ticket: {type: String, nillable: true},
-		url: {type: String, nillable: true},
-		description: String,
-		tags: Array(String)
-	})
-end
+
 
 ################################################################################
 need_changelog = ask_until_acceptable("Need Changelog Entry? [y/n]: ",
@@ -73,3 +58,7 @@ changelog_entry = ChangelogEntry.new(description,
 									url,
 									[] of String)
 puts changelog_entry.to_json
+
+# module ChangelogManager
+#   # TODO Put your code here
+# end
