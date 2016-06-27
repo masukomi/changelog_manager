@@ -19,11 +19,49 @@ class GitIntegration
 	end
 
 	def self.get_files_between_tags(tag_a : String, tag_b : String) : Array(String)
-		files = [] of String
 		result = execute_or_error("git diff --name-only #{tag_a} #{tag_b}",
 				"Unable to determine files between tags #{tag_a} & #{tag_b}")
 		return result.split("\n").uniq
 	end
+
+	# tag_a MUST preceed tag_b temporally or this won't work
+	def self.get_files_and_treishes_between_tags(tag_a : String,
+												 tag_b : String) : Hash(String,  Array(String))
+		result = {} of String => Array(String)
+		log_lines = execute_or_error("git log --stat --format=%H #{tag_a}..#{tag_b}",
+								 "Unable to read log for #{tag_a}..#{tag_b}" ).split("\n")
+
+		# 3b7fbaf61859fd422f3e9d3f44e5ffda7b9666ef
+        #
+ 	 	#  .changelog_entries/577196bd9b7e58e214a9552749103ca8.json | 1 +
+ 	 	#  baz.txt                                                  | 1 -
+ 	 	#  2 files changed, 1 insertion(+), 1 deletion(-)
+		
+		last_treeish = ""
+
+		log_lines.each do |line|
+			if line.match(/^[a-f0-0]{40}$/)
+				last_treeish = line
+			end
+			match = line.match(/^\s+(\S+)\s+|\s+\d+ [+\-]+$/)
+			if match
+				if ! result.has_key? last_treeish
+					result[last_treeish] = [] of String
+				end
+				result[last_treeish] << match[1]
+			end
+		end
+		return result
+	end
+
+	# def self.get_treishes_between_tags(tag_a : String,
+	# 									tag_b : String,
+	# 									file_matcher : String) : Array(String)
+	# 	result = execute_or_error(
+	# 		"git log --format=%H #{tag_a}..#{tag_b} #{file_matcher}",
+	# 		"Unable to retrieve treeishes between tags #{tag_a} & #{tag_b} for #{file_matcher}")
+	# 	return result.split("\n")
+	# end
 
 	def self.get_first_commit()
 		return execute_or_error("git rev-list --max-parents=0 HEAD",

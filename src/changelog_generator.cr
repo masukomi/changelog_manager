@@ -35,7 +35,10 @@ class ChangelogGenerator
 		# TODO iterate over changelogs
 		changelog_entries = [] of ChangelogEntry
 		changelog_files.each do |cf|
-			changelog_entries << ChangelogEntry.from_json(File.read(cf))
+			if File.exists? cf
+				# it's possible that they added one then removed it later
+				changelog_entries << ChangelogEntry.from_json(File.read(cf))
+			end
 		end
 		process_entries_by_section(changelog_entries)
 	end
@@ -71,6 +74,22 @@ class ChangelogGenerator
 		files = GitIntegration.get_files_between_tags(tag_a, tag_b)
 		sub_changelog_files = files.select{|f|
 								f.starts_with?(".changelog_entries")}
+
+		cmd = "CHANGELOG.md"
+		if files.includes? cmd
+			# damn it.
+			# Support for oldschool commits to CHANGELOG.md
+			# that have had changelog entries generated for them...possibly
+			hash_to_string_array = GitIntegration.get_files_and_treishes_between_tags(tag_b,
+															   tag_a)
+			hash_to_string_array.keys.each do |key|
+				hash_files = hash_to_string_array[key]
+				if hash_files.includes? cmd
+					sub_changelog_files << ".changelog_entries/#{key}.json"
+					# these may, or may not, exist in the filesystem
+				end
+			end
+		end
 		return sub_changelog_files
 	end
 	# Returns all the semver tags up to version (if specified) 
