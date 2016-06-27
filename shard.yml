@@ -1,7 +1,11 @@
 name: changelog_manager
-version: 0.1.0
+version: 0.8.0
+github: masukomi/changelog_manager
 
 authors:
   - masukomi <masukomi@masukomi.org>
+
+description: |
+  A tool for managing Changelog files within a git repo.
 
 license: MIT
