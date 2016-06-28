@@ -1,9 +1,11 @@
 require "tempfile"
 require "./git_integration"
 require "./changelog_entry"
+require "./cli_tool"
 
 class ChangelogMigrator
-
+	include CliTool
+	
 	def run()
 		commits = get_changelog_commits()
 		extract_changelog_entries_from_commits(commits)
@@ -19,7 +21,7 @@ class ChangelogMigrator
 				next if File.exists? ".changelog_entries/#{commit}.json"
 
 				diff = get_diff(last_commit.to_s, commit)
-				ticket = nil as String?
+				ticket = ""
 				match = diff.match(/[+]\[(.*?)\]/)
 				if match
 					ticket = match[1]
@@ -28,10 +30,15 @@ class ChangelogMigrator
 				log = GitIntegration.execute_or_error(
 					"git log --stat -n1 #{commit}",
 					"Unable to get log for treeish: #{commit}")
-				ce = ChangelogEntry.new(ChangelogEntry::UNSPECIFIED,
+
+				puts log
+				puts "#{"-" * 80}\nGIVEN THAT..."
+				change_type = get_change_type()
+
+				ce = ChangelogEntry.new(change_type,
 									"", # description
 									ticket,
-									nil as String?,
+									"", #url
 									[] of String)
 				text = ce.to_json + "\n\n" + diff + "\n\n" + log
 				json = get_edited_text(text)
@@ -47,7 +54,7 @@ class ChangelogMigrator
 
 	def get_diff(treeish_a : String, treeish_b : String) : String
 		diff = GitIntegration.execute_or_error(
-			"git diff #{treeish_a} #{treeish_b} CHANGELOG.md | egrep -v 'CHANGELOG.md|index|@@'",
+			"git diff --no-color #{treeish_a} #{treeish_b} CHANGELOG.md | egrep -v 'CHANGELOG.md|index|@@'",
 			"Unable to retrieve diff for #{treeish_a} #{treeish_b}")
 	end
 
