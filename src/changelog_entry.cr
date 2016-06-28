@@ -6,10 +6,14 @@ class ChangelogEntry
 	FIXED   = "Fixed"
 	CHANGED = "Changed"
 	ADDED   = "Added"
+	UNSPECIFIED = "Unspecified"
+	# ^^^ Used when migrating poor data commited to CHANGELOG.md files
+
 	CHANGE_TYPES = {
 		1 => FIXED,
 		2 => CHANGED,
-		3 => ADDED
+		3 => ADDED,
+		4 => UNSPECIFIED # Not an option in the UI
 	}
 	getter :description, :type
 	def initialize(@type        : String,
