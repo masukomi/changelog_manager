@@ -65,7 +65,7 @@ class GitIntegration
 
 	def self.get_first_commit()
 		return execute_or_error("git rev-list --max-parents=0 HEAD",
-								  "Unable to determine first commit")
+						  "Unable to determine first commit").sub("\n", "")
 	end
 
 	def self.get_tag_date(tag : String)
