@@ -15,7 +15,8 @@ class ChangelogEntry
 		3 => ADDED,
 		4 => UNSPECIFIED # Not an option in the UI
 	}
-	getter :description, :type
+	getter :type, :description, :ticket, :url, :tags
+	setter :type, :description, :ticket, :url, :tags
 	def initialize(@type        : String,
 				   @description : String,
 				   @ticket      : String?,
@@ -31,9 +32,9 @@ class ChangelogEntry
 	#
 	# ## Returns:
 	# The location where the file was written.
-	def export(cd : ChangelogDatabase) : String
+	def export(cd : ChangelogDatabase, custom_uuid = nil as String?) : String
 		file_path = File.join([cd.found_path.to_s, 
-								"#{uuid()}.json"])
+						 "#{custom_uuid.nil? ? uuid() : custom_uuid}.json"])
 		File.write(file_path, self.to_json)
 		return file_path
 	end
