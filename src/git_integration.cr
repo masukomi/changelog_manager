@@ -27,9 +27,12 @@ class GitIntegration
 	# tag_a MUST preceed tag_b temporally or this won't work
 	def self.get_files_and_treishes_between_tags(tag_a : String,
 												 tag_b : String) : Hash(String,  Array(String))
+		log_lines = get_log_between_tags(tag_a, tag_b)
+		return self.process_logs(log_lines)
+	end
+	
+	def self.process_logs(log_lines) : Hash(String,  Array(String))
 		result = {} of String => Array(String)
-		log_lines = execute_or_error("git log --stat --format=%H #{tag_a}..#{tag_b}",
-								 "Unable to read log for #{tag_a}..#{tag_b}" ).split("\n")
 
 		# 3b7fbaf61859fd422f3e9d3f44e5ffda7b9666ef
         #
@@ -40,11 +43,12 @@ class GitIntegration
 		last_treeish = ""
 
 		log_lines.each do |line|
-			if line.match(/^[a-f0-0]{40}$/)
+			if line.match(/^[a-f0-9]{40}$/)
 				last_treeish = line
 			end
-			match = line.match(/^\s+(\S+)\s+|\s+\d+ [+\-]+$/)
-			if match
+			match = line.match(/^\s+(\S+)\s+\|\s+\d+ [+\-]+$/)
+			if last_treeish != "" && match
+
 				if ! result.has_key? last_treeish
 					result[last_treeish] = [] of String
 				end
@@ -52,6 +56,11 @@ class GitIntegration
 			end
 		end
 		return result
+	end
+
+	def self.get_log_between_tags(tag_a : String, tag_b : String) : Array(String)
+		return execute_or_error("git log --stat --format=%H #{tag_a}..#{tag_b}",
+								 "Unable to read log for #{tag_a}..#{tag_b}" ).split("\n")
 	end
 
 	# def self.get_treishes_between_tags(tag_a : String,

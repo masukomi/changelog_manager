@@ -1,2 +1,2 @@
 require "spec"
-require "../src/changelog_manager"
+require "../src/git_integration"
