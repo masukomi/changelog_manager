@@ -53,7 +53,7 @@ class ChangelogEntry
 
 	def get_ticket_string() : String
 		md_string = ""
-		if ! @ticket.nil?
+		if ! @ticket.nil? && @ticket != ""
 			md_string += "[#{@ticket}]"
 			if ! @url.nil?
 				md_string += "(#{@url})"
