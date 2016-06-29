@@ -74,18 +74,17 @@ class ChangelogGenerator
 		files = GitIntegration.get_files_between_tags(tag_a, tag_b)
 		sub_changelog_files = files.select{|f|
 								f.starts_with?(".changelog_entries")}
-
-		cmd = "CHANGELOG.md"
-		if files.includes? cmd
+		changelog_md = "CHANGELOG.md"
+		if files.includes? changelog_md
 			# damn it.
 			# Support for oldschool commits to CHANGELOG.md
 			# that have had changelog entries generated for them...possibly
 			hash_to_string_array = GitIntegration.get_files_and_treishes_between_tags(tag_b,
 															   tag_a)
-			hash_to_string_array.keys.each do |key|
-				hash_files = hash_to_string_array[key]
-				if hash_files.includes? cmd
-					sub_changelog_files << ".changelog_entries/#{key}.json"
+			hash_to_string_array.keys.each do |treeish|
+				hash_files = hash_to_string_array[treeish]
+				if hash_files.includes? changelog_md
+					sub_changelog_files << ".changelog_entries/#{treeish}.json"
 					# these may, or may not, exist in the filesystem
 				end
 			end
