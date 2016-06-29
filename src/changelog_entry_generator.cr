@@ -17,8 +17,8 @@ class ChangelogEntryGenerator
 
 		changelog_entry = ChangelogEntry.new(change_type, 
 											description,
-											ticket,
-											url,
+											ticket.to_s,
+											url.to_s,
 											[] of String)
 		# puts changelog_entry.to_json
 		new_entry_location = changelog_entry.export(cd)

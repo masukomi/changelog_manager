@@ -19,8 +19,8 @@ class ChangelogEntry
 	setter :type, :description, :ticket, :url, :tags
 	def initialize(@type        : String,
 				   @description : String,
-				   @ticket      : String?,
-				   @url         : String?,
+				   @ticket      : String,
+				   @url         : String,
 				   @tags        : Array(String))
 	end
 
