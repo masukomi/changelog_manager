@@ -44,11 +44,7 @@ class ChangelogGenerator
 	end
 
 	def process_entries_by_section(entries : Array(ChangelogEntry))
-		[
-			ChangelogEntry::ADDED,
-			ChangelogEntry::CHANGED,
-			ChangelogEntry::FIXED
-		].each do |section|
+		ChangelogEntry::CHANGE_TYPES_ARRAY.each do |section|
 			select_and_put_entries_for_section(section, entries)
 		end
 	end
