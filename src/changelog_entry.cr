@@ -3,18 +3,18 @@ require "crypto/md5"
 
 class ChangelogEntry
 
-	FIXED   = "Fixed"
-	CHANGED = "Changed"
-	ADDED   = "Added"
+	ADDED       = "Added"
+	CHANGED     = "Changed"
+	FIXED       = "Fixed"
+	DEPRECATED  = "Deprecated"
+	REMOVED     = "Removed"
+	SECURITY    = "Security"
 	UNSPECIFIED = "Unspecified"
 	# ^^^ Used when migrating poor data commited to CHANGELOG.md files
-
-	CHANGE_TYPES = {
-		1 => FIXED,
-		2 => CHANGED,
-		3 => ADDED,
-		4 => UNSPECIFIED # Not an option in the UI
-	}
+	CHANGE_TYPES_ARRAY = [
+		ADDED, CHANGED, FIXED, DEPRECATED, REMOVED, SECURITY, UNSPECIFIED
+	]
+	CHANGE_TYPES_HASH = Hash.zip((1..7).to_a, CHANGE_TYPES_ARRAY)
 	getter :type, :description, :ticket, :url, :tags
 	setter :type, :description, :ticket, :url, :tags
 	def initialize(@type        : String,

@@ -31,14 +31,19 @@ module CliTool
 	end
 	
 	def get_change_type() : String
+		question_string = "What kind of Change?"
+		cth = ChangelogEntry::CHANGE_TYPES_HASH
+		cth.keys.sort.each do |number|
+			question_string += "\n#{number} - #{cth[number]}"
+		end
+		question_string += "\n#{cth.keys.sort}: "
+		answers = cth.keys.sort[0..(cth.keys.size - 2)].map{|x| x.to_s}
+				# minus 2 because the last one is for internal use only
 		int_change_type = ask_until_acceptable(
-"What kind of Change?
-1 - Fixed
-2 - Changed
-3 - Added
-[1,2,3]: ",
-							["1", "2", "3"]).to_i
-		return ChangelogEntry::CHANGE_TYPES[int_change_type]
+			question_string,
+			answers
+		).to_i
+		return cth[int_change_type]
 	end
 
 	def get_changelog_db(called_from : String) : ChangelogDatabase
