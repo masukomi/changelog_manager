@@ -1,6 +1,9 @@
 require "semantic_version"
 require "./git_integration"
 class ChangelogGenerator
+	def initialize()
+		
+	end
 	def generate( version : String? )
 		semver_tags = get_semver_tags(version)
 		process_changelog_files(semver_tags)
@@ -12,35 +15,78 @@ class ChangelogGenerator
 		end
 	end
 	def process_changelog_files(semver_tags)
-		last_tag = nil as String?
 
+		first_commit = GitIntegration.get_first_commit()
+		#FIXME... won't catch changelog in first commit
+		# not sure how to fix this, from a git perspective
+		semver_tags.push(first_commit)
+		tags_to_changelog_entries = generate_tags_to_entries_hash(semver_tags)
+		tags_to_changelog_entries = remove_edits(semver_tags,
+												 tags_to_changelog_entries)
+		
+		generate_entries(semver_tags, tags_to_changelog_entries)
+	end
+
+	def generate_tags_to_entries_hash(semver_tags : Array(String)) : Hash(Array(String), Array(String))
+		tags_to_changelog_entries = {} of Array(String) => Array(String)
+		last_tag = nil as String?
 		semver_tags.each do |tag|
 			if ! last_tag.nil?
-				generate_entry_for_tag_range(last_tag.to_s, tag)
+				tags_to_changelog_entries[[last_tag.to_s, tag]] =
+					get_changelog_files_between_tags(last_tag.to_s, tag)
+				#generate_entry_for_tag_range(last_tag.to_s, tag)
 			end
 			last_tag = tag
 		end
-		#FIXME... won't catch changelog in first commit
-		# not sure how to fix this, from a git perspective
-		first_commit = GitIntegration.get_first_commit()
-		generate_entry_for_tag_range(last_tag.to_s, first_commit)
+		return tags_to_changelog_entries
 	end
 
-	def generate_entry_for_tag_range(tag_a : String, tag_b : String)
-		changelog_files = get_changelog_files_between_tags(tag_a,
-														   tag_b)
-		tag_a_date = GitIntegration.get_tag_date(tag_a).sub(/T.*/,
-																  "")
-		puts "## [#{tag_a.sub(/^v/, "")}] - #{tag_a_date}"
-		# TODO iterate over changelogs
-		changelog_entries = [] of ChangelogEntry
-		changelog_files.each do |cf|
-			if File.exists? cf
-				# it's possible that they added one then removed it later
-				changelog_entries << ChangelogEntry.from_json(File.read(cf))
+	def remove_edits(semver_tags : Array(String), tags_to_entries : Hash(Array(String), Array(String))) : Hash(Array(String), Array(String))
+
+		used_entries = Set(String).new()
+		last_tag = nil as String?
+		# we're going oldest to newest now
+		semver_tags.reverse.each do |tag|
+			if ! last_tag.nil?
+				entries = tags_to_entries[[tag, last_tag.to_s]]
+				entries.each do | entry | 
+					if ! used_entries.includes? entry
+						used_entries.add(entry)
+					else 
+						# That was used in an older commit
+						tags_to_entries[
+							[tag, last_tag.to_s]
+						].delete(entry)
+					end
+				end
 			end
+			last_tag = tag
 		end
-		process_entries_by_section(changelog_entries)
+		return tags_to_entries
+	end
+
+
+	def generate_entries(semver_tags : Array(String), 
+						 tags_to_entries : Hash(Array(String), Array(String)))
+		
+		last_tag = nil as String?
+		semver_tags.each do | tag | 
+			if ! last_tag.nil? 
+				tag_date = GitIntegration.get_tag_date(tag).sub(/T.*/, "")
+				puts "## [#{tag.sub(/^v/, "")}] - #{tag_date}"
+
+				changelog_files = tags_to_entries[[last_tag.to_s, tag]]
+				changelog_entries = [] of ChangelogEntry
+				changelog_files.each do |cf|
+					if File.exists? cf
+						# it's possible that they added one then removed it later
+						changelog_entries << ChangelogEntry.from_json(File.read(cf))
+					end
+				end
+				process_entries_by_section(changelog_entries)
+			end
+			last_tag = tag
+		end
 	end
 
 	def process_entries_by_section(entries : Array(ChangelogEntry))
