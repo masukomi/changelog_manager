@@ -72,8 +72,8 @@ class ChangelogGenerator
 		last_tag = nil as String?
 		semver_tags.each do | tag | 
 			if ! last_tag.nil? 
-				tag_date = GitIntegration.get_tag_date(tag).sub(/T.*/, "")
-				puts "## [#{tag.sub(/^v/, "")}] - #{tag_date}"
+				tag_date = GitIntegration.get_tag_date(last_tag).sub(/T.*/, "")
+				puts "## [#{last_tag.sub(/^v/, "")}] - #{tag_date}"
 
 				changelog_files = tags_to_entries[[last_tag.to_s, tag]]
 				changelog_entries = [] of ChangelogEntry
