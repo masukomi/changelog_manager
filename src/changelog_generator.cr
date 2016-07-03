@@ -20,6 +20,7 @@ class ChangelogGenerator
 		#FIXME... won't catch changelog in first commit
 		# not sure how to fix this, from a git perspective
 		semver_tags.push(first_commit)
+		semver_tags.unshift("HEAD")
 		tags_to_changelog_entries = generate_tags_to_entries_hash(semver_tags)
 		tags_to_changelog_entries = remove_edits(semver_tags,
 												 tags_to_changelog_entries)
@@ -72,8 +73,13 @@ class ChangelogGenerator
 		last_tag = nil as String?
 		semver_tags.each do | tag | 
 			if ! last_tag.nil? 
-				tag_date = GitIntegration.get_tag_date(last_tag).sub(/T.*/, "")
-				puts "## [#{last_tag.sub(/^v/, "")}] - #{tag_date}"
+				tag_date = ""
+				if last_tag != "HEAD"
+					tag_date = GitIntegration.get_tag_date(last_tag).sub(/T.*/, "")
+					puts "## [#{last_tag.sub(/^v/, "")}] - #{tag_date}"
+				else
+					puts "## [Unreleased]"
+				end
 
 				changelog_files = tags_to_entries[[last_tag.to_s, tag]]
 				changelog_entries = [] of ChangelogEntry
