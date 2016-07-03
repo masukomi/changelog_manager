@@ -16,21 +16,14 @@ you some quick questions and store a JSON file in the `.changelog_entries`
 folder of your project. Then, when your ready, it will generate a full
 CHANGELOG.md organizing everything by tag and change type.
 
+## Why not auto-generate them from Commits or PRs?
+There are a lot of solutions out there that offer this. There are a few problems
+with this
 
-## Installation
+1. Commit messages are too fine grained and frequently very geeky
+2. The Ticket / Story is typically the correct level of abstraction and their titles are rarely appropriately worded for Changelog entries
+3. and many, [many more reasons](http://weblog.masukomi.org/2016/06/30/why-you-cant-auto-generate-your-changelog/).
 
-## Building from source: 
-Changelog Manager is written in Crystal so, you'll need to 
-[install the Crystal compiler](http://crystal-lang.org/docs/installation/index.html).
-
-Then 
-
-    `crystal compile --release src/changelog_manager.cr`
-
-Once you've built it, put the new `changelog_manager` file somewhere in your
-path. Here's [how to add a directory to your path](http://unix.stackexchange.com/a/26059/124338). Or, if you just run `echo $PATH` on the command line you can simply
-move `changelog_manager` to any of the directories in that list (that you have
-write access to).
 
 ## Usage
 
@@ -74,15 +67,27 @@ It doesn't matter that the entry was created with an old commit.
 of files found in `.commit_entries`. I.e. 
 ["new hotness", not "old and busted"](https://www.youtube.com/watch?v=ha-uagjJQ9k).
 
+## Installation
 
-TODO: hack STDIN so that we can make this a git pre-commit hook
+## Download a pre-compiled binary
+You can download [changelog_manager for macOS
+here](http://masukomi.org/projects/changelog_manager/changelog_manager.tgz).
+Just decompress it `tar -xzf changelog_manager.zip` and add it to your path.
+Then follow the Usage guidelines.
 
 
-## Development
+## Building from source: 
+Changelog Manager is written in Crystal so, you'll need to 
+[install the Crystal compiler](http://crystal-lang.org/docs/installation/index.html).
 
-TODO: Write development instructions here
+Then 
 
+    `crystal compile --release src/changelog_manager.cr`
 
+Once you've built it, put the new `changelog_manager` file somewhere in your
+path. Here's [how to add a directory to your path](http://unix.stackexchange.com/a/26059/124338). Or, if you just run `echo $PATH` on the command line you can simply
+move `changelog_manager` to any of the directories in that list (that you have
+write access to).
 
 ## Contributors
 
