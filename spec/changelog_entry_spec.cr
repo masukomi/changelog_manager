@@ -14,4 +14,13 @@ describe ChangelogEntry do
 		ce.ticket.should(eq("8"))
 		ce.url.should(eq("https://github.com/masukomi/changelog_manager/issues/8"))
 	end
+
+	it "should include square brackets around ticket numbers" do
+		ce = ChangelogEntry.new("Changed", 
+										"foo",
+										"4",
+										"http://example.com/4",
+										[] of String)
+		ce.to_md.starts_with?("[\\[4\\]](http://example.com/4)").should(eq(true))
+	end
 end
