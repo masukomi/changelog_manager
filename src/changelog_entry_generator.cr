@@ -7,11 +7,18 @@ class ChangelogEntryGenerator
 		#OPTIONAL test if needs changelog
 
 		cd = get_changelog_db(get_called_from())
+		config = cd.get_config()
+
 
 		change_type = get_change_type()
 
 		ticket      = Readline.readline("Ticket ID? (optional): ")
-		url         = Readline.readline("Ticket URL? (optional): ")
+		url         = ""
+		if ticket.to_s != "" && config.ticket_url_prefix
+			url = config.ticket_url_prefix.to_s + ticket.to_s
+		else
+			url         = Readline.readline("Ticket URL? (optional): ")
+		end
 		description = ask_for_non_optional_input("Describe your change: ")
 		# TODO support tags
 

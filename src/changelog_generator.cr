@@ -121,7 +121,8 @@ class ChangelogGenerator
 	def get_changelog_files_between_tags(tag_a : String, tag_b : String) : Array(String)
 		files = GitIntegration.get_files_between_tags(tag_a, tag_b)
 		sub_changelog_files = files.select{|f|
-								f.starts_with?(".changelog_entries")}
+			f.starts_with?(".changelog_entries") && ! f.ends_with? "config.json"
+		}
 		changelog_md = "CHANGELOG.md"
 		if files.includes? changelog_md
 			# damn it.
