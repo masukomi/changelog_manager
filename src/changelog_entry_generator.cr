@@ -13,7 +13,7 @@ class ChangelogEntryGenerator
 		change_type = get_change_type()
 
 		ticket      = Readline.readline("Ticket ID? (optional): ")
-		url         = ""
+		url         = nil as String?
 		if ticket.to_s != "" && config.ticket_url_prefix
 			url = config.ticket_url_prefix.to_s + ticket.to_s
 		else
@@ -23,10 +23,10 @@ class ChangelogEntryGenerator
 		# TODO support tags
 
 		changelog_entry = ChangelogEntry.new(change_type, 
-											description,
-											ticket.to_s,
-											url.to_s,
-											[] of String)
+										description,
+										ticket.to_s == "" ? nil : ticket.to_s,
+										url.to_s == "" ? nil : url.to_s,
+										[] of String)
 		# puts changelog_entry.to_json
 		new_entry_location = changelog_entry.export(cd)
 		success = GitIntegration.add_file(new_entry_location, changelog_entry)
