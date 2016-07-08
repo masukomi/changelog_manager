@@ -25,6 +25,10 @@ OptionParser.parse! do |parser|
 				"--to=VERSION", 
 				"Generates CHANGELOG.md for specific version"
 			 ) { |version| log_version = version }
+	parser.on("-h", "--help", "Show this help") { 
+		puts parser
+		exit 0
+	}
 end
 
 if ! generate_log
