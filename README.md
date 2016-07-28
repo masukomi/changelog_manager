@@ -39,11 +39,12 @@ CHANGELOG.md file.
 
 ### Generating a new CHANGELOG.md
 
-To generate a new CHANGELOG.md just invoke it with the `-l` parameter. The
-changelog is printed to STDOUT so that you can shove it into a file or run it
-through a Markdown -> HTML conversion, or whatever else you want to do with it.
+To generate a new CHANGELOG.md just invoke it with the `-c` parameter (or
+`--compile`). The changelog is printed to STDOUT so that you can shove it into
+a file or run it through a Markdown -> HTML conversion, or whatever else you 
+want to do with it.
 
-`chagelog_manager -l > CHANGELOG.md`
+`chagelog_manager -c > CHANGELOG.md`
 
 ### Editing an entry
 

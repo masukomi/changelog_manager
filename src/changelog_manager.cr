@@ -20,7 +20,7 @@ log_version = nil as String?
 
 OptionParser.parse! do |parser|
 	parser.banner = "Usage: changelog_manager [arguments]"
-	parser.on("-l", "--log", "Generate CHANGELOG.md for all entries") { generate_log = true }
+	parser.on("-c", "--compile", "Generate CHANGELOG.md for all entries") { generate_log = true }
 	parser.on("-v VERSION", 
 				"--to=VERSION", 
 				"Generates CHANGELOG.md for specific version"
