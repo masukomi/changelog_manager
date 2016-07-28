@@ -5,6 +5,7 @@ require "./cli_tool"
 
 class ChangelogMigrator
 	include CliTool
+	@changelog_database : ChangelogDatabase
 	def initialize
 		@changelog_database = get_changelog_db(get_called_from())
 	end
