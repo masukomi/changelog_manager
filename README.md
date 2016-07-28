@@ -73,17 +73,29 @@ of files found in `.commit_entries`. I.e.
 ## Download a pre-compiled binary
 You can download [changelog_manager for macOS
 here](http://masukomi.org/projects/changelog_manager/changelog_manager.tgz).
-Just decompress it `tar -xzf changelog_manager.zip` and add it to your path.
+Just decompress it `tar -xzf changelog_manager.tgz` and add it to your path.
 Then follow the Usage guidelines.
 
 
 ## Building from source: 
+
 Changelog Manager is written in Crystal so, you'll need to 
 [install the Crystal compiler](http://crystal-lang.org/docs/installation/index.html).
 
-Then 
+### macOS
+If you're on macOS you can make a staticly compiled binary that you _should_
+be able to distribute to other macOS users with this command:
 
-    `crystal compile --release src/changelog_manager.cr`
+	crystal compile --release src/changelog_manager.cr --link-flags "/usr/local/opt/libevent/lib/libevent.a /usr/local/opt/libpcl/lib/libpcl.a /usr/local/opt/bdw-gc/lib/libgc.a"
+
+### Other OSs
+
+	crystal compile --release src/changelog_manager.cr
+
+This is not a static binary. Any system you distribute it on must have the
+required headers installed. You can do something similar to the macOS with
+`--link-flags` but which ones you link in will be different.
+
 
 Once you've built it, put the new `changelog_manager` file somewhere in your
 path. Here's [how to add a directory to your path](http://unix.stackexchange.com/a/26059/124338). Or, if you just run `echo $PATH` on the command line you can simply
