@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/masukomi/changelog_manager.svg?branch=master)](https://travis-ci.org/masukomi/changelog_manager)
+
 # Changelog Manager
 
 Changelog Manager helps you generate a `CHANGELOG.md` file for your repo 
