@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# outputs the list of files in .changelog_entries along with the description
+# contain in each one.
+# useful for finding one to edit / remove.
+
+grep -r --color=none description .changelog_entries/* | sed -e 's/:{"type.*description":"/  /' -e 's/","tags.*//'
