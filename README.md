@@ -24,6 +24,9 @@ with this
 2. The Ticket / Story is typically the correct level of abstraction and their titles are rarely appropriately worded for Changelog entries
 3. and many, [many more reasons](http://weblog.masukomi.org/2016/06/30/why-you-cant-auto-generate-your-changelog/).
 
+## How It Works
+
+![](docs/images/how_it_works.svg)
 
 ## Usage
 
