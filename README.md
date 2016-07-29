@@ -28,7 +28,7 @@ with this
 
 ## How It Works
 
-![](docs/images/how_it_works.png)
+![](https://cdn.rawgit.com/masukomi/changelog_manager/master/docs/images/how_it_works.svg)
 
 ## Usage
 
