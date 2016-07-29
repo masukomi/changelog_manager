@@ -29,12 +29,17 @@ class ChangelogEntryGenerator
 										[] of String)
 		# puts changelog_entry.to_json
 		new_entry_location = changelog_entry.export(cd)
-		success = GitIntegration.add_file(new_entry_location, changelog_entry)
+		success = false
+		if config.git_add
+			success = GitIntegration.add_file(new_entry_location, changelog_entry)
+		end
 		if success 
 			puts "Added #{new_entry_location} to git"
-		else
+		elsif ! config.git_add
+			puts "Created #{new_entry_location}"
+		elsif config.git_add
 			#can't happen
-			puts "Problems were encountered"
+			puts "Problems were encountered adding the new entry to git"
 			exit 2
 		end
 		exit 0

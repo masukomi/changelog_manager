@@ -37,6 +37,13 @@ It will ask you a series of questions and generate a new file in
 `.changelog_entries` That file will be used when generating the full
 CHANGELOG.md file.
 
+### Git Integration
+
+By default new changelog entry will be added to git (but not committed) upon 
+creation. This can be changed by changing `"git_add" : true` 
+to `"git_add" : false` in the `.changelog_entries/config.json` file that is
+auto-created the first time you generate a changelog entry.
+
 ### Generating a new CHANGELOG.md
 
 To generate a new CHANGELOG.md just invoke it with the `-c` parameter (or
