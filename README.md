@@ -28,7 +28,7 @@ with this
 
 ## How It Works
 
-![](docs/images/how_it_works.svg)
+![](docs/images/how_it_works.png)
 
 ## Usage
 
