@@ -14,11 +14,31 @@ class ChangelogDatabase
 			create_default_folder()
 		end
 		config_file_path = File.join([@found_path.to_s, "config.json"])
-		if File.exists? config_file_path
-			return ChangelogConfig.from_json(File.read(config_file_path))
-		end
-		return ChangelogConfig.new()
+		return find_or_create_config(config_file_path)
 	end
+
+	def find_or_create_config(config_file_path : String) : ChangelogConfig
+		if File.exists? config_file_path
+			cc = ChangelogConfig.from_json(File.read(config_file_path))
+			## auto-upgrade with new options:
+			save_changelog_config(cc, config_file_path)
+			return cc
+		else
+			cc = ChangelogConfig.new()
+			save_changelog_config(cc, config_file_path)
+			return cc
+		end
+	end
+
+	def save_changelog_config(cc : ChangelogConfig, config_file_path : String)
+		begin
+			cc.write_to(config_file_path)
+		rescue e
+			STDERR.puts("Unable to save config file to: #{config_file_path}")
+			STDERR.puts("#{e.message}")
+		end
+	end
+
 	def dot_changelog_entries_path() : String?
 		dirs = @launch_dir.split(File::SEPARATOR_STRING)
 		last_index = dirs.size() -1
