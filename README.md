@@ -2,7 +2,7 @@
 
 # Changelog Manager
 
-Changelog Manager helps you generate a `CHANGELOG.md` file for your repo 
+Changelog Manager helps you generate a `CHANGELOG.md` file for your Git repo 
 that adheres to the [Keep A Changelog](http://keepachangelog.com/) standard, 
 and doesn't result in almost constant conflicts.
 
@@ -44,10 +44,19 @@ CHANGELOG.md file.
 
 ### Git Integration
 
+#### New Entries
+
 By default new changelog entry will be added to git (but not committed) upon 
 creation. This can be changed by changing `"git_add" : true` 
 to `"git_add" : false` in the `.changelog_entries/config.json` file that is
 auto-created the first time you generate a changelog entry.
+
+#### Changelog Generation
+
+The Changelog version numbers are extracted from git tags. The presumption is
+that your repo will be tagged using semantically versioned numbers that can
+optionally begin with a "v" for example `v1.0.1` and `1.0.1` are both acceptable
+version numbers to the `changelog_manager`.
 
 ### Generating a new CHANGELOG.md
 
@@ -79,6 +88,17 @@ It doesn't matter that the entry was created with an old commit.
 `changelog_manager` will always generate CHANGELOG.md from the latest version
 of files found in `.commit_entries`. I.e. 
 ["new hotness", not "old and busted"](https://www.youtube.com/watch?v=ha-uagjJQ9k).
+
+Note: in the `utils` directory you will find a `description_by_file` bash
+script. Run this within the home directory of your app and it'll generate a
+listing of the JSON files and the description in each. For example:
+
+    $ description_by_file
+    .changelog_entries/101b2bc9f12ab533da6dd9957308fec1.json  new entry creation now honors git_add setting in config file
+    .changelog_entries/1857d1f1ef88830d500227dd2b135f07.json  Improved readme, added link to download the latest pre-compiled version
+
+You can then pipe that output through grep, or whatever to find the one you're
+looking for. Suggestions for improving the editing experience will be welcomed.
 
 ## Installation
 
