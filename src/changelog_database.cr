@@ -33,6 +33,7 @@ class ChangelogDatabase
 	def save_changelog_config(cc : ChangelogConfig, config_file_path : String)
 		begin
 			cc.write_to(config_file_path)
+			 GitIntegration.add_file(config_file_path)
 		rescue e
 			STDERR.puts("Unable to save config file to: #{config_file_path}")
 			STDERR.puts("#{e.message}")
