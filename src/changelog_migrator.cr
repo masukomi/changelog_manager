@@ -84,8 +84,7 @@ Delete this line ^^ and everything below it
 
 	def export_and_add(ce : ChangelogEntry, commit : String)
 		new_entry_location = ce.export(@changelog_database, commit)
-		new_entry_location = GitIntegration.add_file(new_entry_location,
-													ce)
+		new_entry_location = GitIntegration.add_file(new_entry_location)
 		puts "created #{new_entry_location}"
 	end
 

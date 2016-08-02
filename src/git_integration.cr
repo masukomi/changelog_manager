@@ -1,6 +1,6 @@
 class GitIntegration
 
-	def self.add_file(file_path, changelog_entry : ChangelogEntry) : Bool
+	def self.add_file(file_path : String) : Bool
 		add      = "git add #{file_path}"
 		commands = [add]
 		# There were more. There may be more again...

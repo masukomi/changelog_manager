@@ -31,7 +31,7 @@ class ChangelogEntryGenerator
 		new_entry_location = changelog_entry.export(cd)
 		success = false
 		if config.git_add
-			success = GitIntegration.add_file(new_entry_location, changelog_entry)
+			success = GitIntegration.add_file(new_entry_location)
 		end
 		if success 
 			puts "Added #{new_entry_location} to git"
