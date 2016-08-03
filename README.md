@@ -113,6 +113,8 @@ here](http://masukomi.org/projects/changelog_manager/changelog_manager.tgz).
 Just decompress it `tar -xzf changelog_manager.tgz` and add it to your path.
 Then follow the Usage guidelines.
 
+See [troubleshooting](docs/troubleshooting.md) if you have problems with the
+downloaded binary.
 
 ## Building from source: 
 
@@ -123,11 +125,11 @@ Changelog Manager is written in Crystal so, you'll need to
 If you're on macOS you can make a staticly compiled binary that you _should_
 be able to distribute to other macOS users with this command:
 
-	crystal compile --release src/changelog_manager.cr --link-flags "/usr/local/opt/libevent/lib/libevent.a /usr/local/opt/libpcl/lib/libpcl.a /usr/local/opt/bdw-gc/lib/libgc.a"
+	crystal build --release src/changelog_manager.cr --link-flags "/usr/local/opt/libevent/lib/libevent.a /usr/local/opt/libpcl/lib/libpcl.a /usr/local/opt/bdw-gc/lib/libgc.a"
 
 ### Other OSs
 
-	crystal compile --release src/changelog_manager.cr
+	crystal build --release src/changelog_manager.cr
 
 This is not a static binary. Any system you distribute it on must have the
 required headers installed. You can do something similar to the macOS with
