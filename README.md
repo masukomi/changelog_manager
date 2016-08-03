@@ -42,17 +42,15 @@ It will ask you a series of questions and generate a new file in
 `.changelog_entries` That file will be used when generating the full
 CHANGELOG.md file.
 
+If you project uses a ticket tracker you can [configure](docs/configuration.md)
+it so that it will generate the url to the ticket without asking.
+
 ### Git Integration
 
 #### New Entries
 
 By default new changelog entry will be added to git (but not committed) upon 
-creation. This can be changed by changing `"git_add" : true` 
-to `"git_add" : false` in the `.changelog_entries/config.json` file that is
-auto-created the first time you generate a changelog entry.
-
-See [Personal Configuration](docs/personal_configuration.md) 
-for how to override a project's `git_add` configuration.
+creation. This can be changed as part of the [configuration](docs/configuration.md)
 
 #### Changelog Generation
 
@@ -102,6 +100,10 @@ listing of the JSON files and the description in each. For example:
 
 You can then pipe that output through grep, or whatever to find the one you're
 looking for. Suggestions for improving the editing experience will be welcomed.
+
+## Configuration
+Changelog Manager [some optional configurations](docs/configuration.md) you will
+want to check out.
 
 ## Installation
 

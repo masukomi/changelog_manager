@@ -16,6 +16,9 @@ your `.gitignore`
 
 This file would contain ONLY the values you wish to override.
 
+For a list of the configurable settings and their acceptable values see the
+[configuration](configuration.md) documentation.
+
 For example:
 
 This projects `config.json` says
