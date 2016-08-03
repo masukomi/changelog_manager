@@ -3,4 +3,4 @@
 /.crystal/
 /.shards/
 changelog_manager
-
+.changelog_manager/personal_config.json

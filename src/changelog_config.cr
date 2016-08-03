@@ -6,6 +6,13 @@ class ChangelogConfig
 		@git_add = true as Bool
 	end
 
+	def handle_overrides( overrides : JSON::Any)
+		@ticket_url_prefix = (overrides["ticket_url_prefix"].to_s rescue nil) || 
+			@ticket_url_prefix
+		temp_add = overrides["git_add"].as_bool rescue nil
+		@git_add = temp_add.nil? ? @git_add : temp_add
+	end
+
 	def write_to(path : String)
 		File.write(path, self.to_json)
 	end

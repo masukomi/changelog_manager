@@ -18,16 +18,32 @@ class ChangelogDatabase
 	end
 
 	def find_or_create_config(config_file_path : String) : ChangelogConfig
+		cc = ChangelogConfig.new()
 		if File.exists? config_file_path
 			cc = ChangelogConfig.from_json(File.read(config_file_path))
 			## auto-upgrade with new options:
 			save_changelog_config(cc, config_file_path)
-			return cc
 		else
-			cc = ChangelogConfig.new()
 			save_changelog_config(cc, config_file_path)
-			return cc
 		end
+		cc = load_personal_config_overrides(cc)
+		# overrides are never saved or git-added
+		return cc
+	end
+
+	def load_personal_config_overrides(cc : ChangelogConfig)
+		personal_config_path = File.join([@found_path.to_s, "personal_config.json"])
+		if File.exists? personal_config_path
+			raw_json = File.read(personal_config_path)
+			begin
+				json = JSON.parse(raw_json)
+				cc.handle_overrides(json)
+			rescue e
+				STDERR.puts("Unable to process personal_config.json: #{e}")
+				exit 3
+			end
+		end
+		return cc
 	end
 
 	def save_changelog_config(cc : ChangelogConfig, config_file_path : String)

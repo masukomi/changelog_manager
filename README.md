@@ -51,6 +51,9 @@ creation. This can be changed by changing `"git_add" : true`
 to `"git_add" : false` in the `.changelog_entries/config.json` file that is
 auto-created the first time you generate a changelog entry.
 
+See [Personal Configuration](docs/personal_configuration.md) 
+for how to override a project's `git_add` configuration.
+
 #### Changelog Generation
 
 The Changelog version numbers are extracted from git tags. The presumption is
