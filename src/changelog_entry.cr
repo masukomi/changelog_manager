@@ -63,7 +63,11 @@ class ChangelogEntry
 	end
 
 	def contains_tags?(query_tags : Array(String))
-		return ! (@tags & query_tags).empty?
+		return ! matching_tags(query_tags).empty?
+	end
+
+	def matching_tags(query_tags : Array(String))
+		return (@tags & query_tags)
 	end
 
 	# the following lets us ingest and expel json
