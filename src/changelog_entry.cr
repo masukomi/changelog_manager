@@ -62,6 +62,10 @@ class ChangelogEntry
 		return md_string
 	end
 
+	def contains_tags?(query_tags : Array(String))
+		return ! (@tags & query_tags).empty?
+	end
+
 	# the following lets us ingest and expel json
 	JSON.mapping({
 		type:        String,

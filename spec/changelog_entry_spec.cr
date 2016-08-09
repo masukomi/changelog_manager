@@ -23,4 +23,27 @@ describe ChangelogEntry do
 										[] of String)
 		ce.to_md.starts_with?("[\\[4\\]](http://example.com/4)").should(eq(true))
 	end
+
+	it "should indicate if it contains_tags?" do
+		ce = ChangelogEntry.new("Changed", 
+										"foo",
+										"4",
+										"http://example.com/4",
+										["foo", "bar", "baz"])
+
+		ce.contains_tags?(["bar", "baz"]).should(eq(true))
+	end
+
+	it "should indicate if it doesn't contain tags" do
+		ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+										["foo", "bar", "baz"])
+
+		ce.contains_tags?(["foodle", "fi"]).should(eq(false))
+
+		ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+										[] of String)
+
+		ce.contains_tags?(["foodle", "fi"]).should(eq(false))
+
+	end
 end
