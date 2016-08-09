@@ -21,12 +21,15 @@ class ChangelogEntryGenerator
 		end
 		description = ask_for_non_optional_input("Describe your change: ")
 		# TODO support tags
+		raw_tags = Readline.readline("Tags (Optional, comma separated): ")
+		tags = raw_tags.to_s.split(/,\s*/).select{|x| !x.nil? && x != ""} 
+		# i don't trust them to follow instructions
 
 		changelog_entry = ChangelogEntry.new(change_type, 
 										description,
 										ticket.to_s == "" ? nil : ticket.to_s,
 										url.to_s == "" ? nil : url.to_s,
-										[] of String)
+										tags)
 		# puts changelog_entry.to_json
 		new_entry_location = changelog_entry.export(cd)
 		success = false

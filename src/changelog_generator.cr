@@ -88,7 +88,7 @@ class ChangelogGenerator
 					if File.exists? cf
 						# it's possible that they added one then removed it later
 						ce = ChangelogEntry.from_json(File.read(cf))
-						if is_usable_entry(ce, with_tags_arry)
+						if is_usable_entry?(ce, with_tags_arry)
 							changelog_entries <<  ce
 						end
 					end
