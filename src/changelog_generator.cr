@@ -4,9 +4,9 @@ class ChangelogGenerator
 	def initialize()
 		
 	end
-	def generate( version : String? )
+	def generate( version : String? , with_tags : Set(String))
 		semver_tags = get_semver_tags(version)
-		process_changelog_files(semver_tags)
+		process_changelog_files(semver_tags, with_tags)
 	end
 	def puts_header(version : String?)
 		puts "# Changelog\n"
@@ -14,7 +14,7 @@ class ChangelogGenerator
 			puts "## Unreleased\n"
 		end
 	end
-	def process_changelog_files(semver_tags)
+	def process_changelog_files(semver_tags : Array(String), with_tags : Set(String))
 
 		first_commit = GitIntegration.get_first_commit()
 		#FIXME... won't catch changelog in first commit
@@ -25,7 +25,7 @@ class ChangelogGenerator
 		tags_to_changelog_entries = remove_edits(semver_tags,
 												 tags_to_changelog_entries)
 		
-		generate_entries(semver_tags, tags_to_changelog_entries)
+		generate_entries(semver_tags, with_tags, tags_to_changelog_entries)
 	end
 
 	def generate_tags_to_entries_hash(semver_tags : Array(String)) : Hash(Array(String), Array(String))
@@ -68,8 +68,9 @@ class ChangelogGenerator
 
 
 	def generate_entries(semver_tags : Array(String), 
+						 with_tags : Set(String),
 						 tags_to_entries : Hash(Array(String), Array(String)))
-		
+		with_tags_arry = with_tags.to_a
 		last_tag = nil as String?
 		semver_tags.each do | tag | 
 			if ! last_tag.nil? 
@@ -86,7 +87,10 @@ class ChangelogGenerator
 				changelog_files.each do |cf|
 					if File.exists? cf
 						# it's possible that they added one then removed it later
-						changelog_entries << ChangelogEntry.from_json(File.read(cf))
+						ce = ChangelogEntry.from_json(File.read(cf))
+						if is_usable_entry?(ce, with_tags_arry)
+							changelog_entries <<  ce
+						end
 					end
 				end
 				process_entries_by_section(changelog_entries)
@@ -95,6 +99,9 @@ class ChangelogGenerator
 		end
 	end
 
+	def is_usable_entry?(ce : ChangelogEntry, with_tags_arry : Array(String))
+		return (with_tags_arry.empty? || ce.tags.empty? || ce.contains_tags? with_tags_arry)
+	end
 	def process_entries_by_section(entries : Array(ChangelogEntry))
 		ChangelogEntry::CHANGE_TYPES_ARRAY.each do |section|
 			select_and_put_entries_for_section(section, entries)
