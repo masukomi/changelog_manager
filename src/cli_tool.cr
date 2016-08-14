@@ -94,4 +94,10 @@ module CliTool
 			exit 1
 		end
 	end
+
+	def get_stdin_from_tty()
+		if ! STDIN.tty?
+			STDIN.reopen(File.open("/dev/tty", "a+"))
+		end
+	end
 end

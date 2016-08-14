@@ -4,6 +4,13 @@ class ChangelogEntryGenerator
 
 
 	def run()
+
+		get_stdin_from_tty()
+		# If we're being run as a git hook
+		# we need to reopen STDIN from tty because git doesn't
+		# want interative commit hooks.
+		# Tough shit git. :P
+
 		#OPTIONAL test if needs changelog
 
 		cd = get_changelog_db(get_called_from())
