@@ -48,9 +48,9 @@ else
 end
 
 
+# the following is to compensate for a weird Crystal bug
+# https://github.com/crystal-lang/crystal/issues/2065
+STDOUT.blocking = true
+STDERR.blocking = true
 
 
-
-# module ChangelogManager
-#	 # TODO Put your code here
-# end
