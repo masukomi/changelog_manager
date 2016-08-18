@@ -53,4 +53,4 @@ end
 STDOUT.blocking = true
 STDERR.blocking = true
 
-
+exit(0)
