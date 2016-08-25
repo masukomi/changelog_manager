@@ -44,8 +44,7 @@ class ChangelogEntryGenerator
 
 		changelog_entry = get_changelog_entry_from_input(cd, config)
 		# puts changelog_entry.to_json
-		new_entry_location = changelog_entry.export(cd)
-		success = persist(changelog_entry, cd)
+		new_entry_location, success = persist(changelog_entry, cd)
 		if success 
 			puts "Added #{new_entry_location} to git"
 		elsif ! config.git_add
@@ -60,13 +59,13 @@ class ChangelogEntryGenerator
 
 	def persist(ce : ChangelogEntry, 
 				cd : ChangelogDatabase, 
-				config : ChangelogConfig) : Bool
+				config : ChangelogConfig) : Tuple(String, Bool)
 		new_entry_location = ce.export(cd)
 		success = false
 		if config.git_add
 			success = GitIntegration.add_file(new_entry_location)
 		end
-		return success
+		return {new_entry_location, success}
 	end
 
 
