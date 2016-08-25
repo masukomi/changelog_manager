@@ -7,6 +7,7 @@ require "./cli_tool"
 class ChangelogMigrator
 	include CliTool
 	@changelog_database : ChangelogDatabase
+	
 	def initialize
 		@changelog_database = get_changelog_db(get_called_from())
 	end
@@ -34,11 +35,11 @@ class ChangelogMigrator
 		return ce
 	end
 
-	def generate_and_persist_new_entry(cd : ChangelogDatabase)
+	def generate_and_persist_new_entry(cd : ChangelogDatabase) : Tuple(ChangelogEntry, Bool)
 		ceg = ChangelogEntryGenerator.new()
 		config = cd.get_config()
 		ce = generate_new_entry(@changelog_database, ceg, config)
-		return ceg.persist(ce, @changelog_database, config )
+		return {ce, ceg.persist(ce, @changelog_database, config )}
 	end
 
 	def extract_changelog_entries_from_commits(commits : Array(String))
@@ -61,7 +62,12 @@ class ChangelogMigrator
 				display_findings(log, diff)
 				
 				if (ask_yes_no("Do you want to make an entry for this?"))
-					generate_and_persist_new_entry(@changelog_database)
+					ce, success = generate_and_persist_new_entry(@changelog_database)
+					if ! success
+						puts "ERROR PERSISTING THAT LAST ONE."
+						puts "STOPPING NOW"
+						exit(4)
+					end
 				end
 			end
 			last_commit = commit
