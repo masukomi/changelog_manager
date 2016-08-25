@@ -27,11 +27,18 @@ class ChangelogMigrator
 		puts "#{"-" * 80}\nGIVEN THAT..."
 	end
 
-	def generate_new_entry(cd : ChangelogDatabase) : ChangelogEntry
-		ceg = ChangelogEntryGenerator.new()
-		config = cd.get_config()
+	def generate_new_entry(cd : ChangelogDatabase,
+						  ceg : ChangelogEntryGenerator,
+						  config : ChangelogConfig) : ChangelogEntry
 		ce = ceg.get_changelog_entry_from_input(@changelog_database, config)
 		return ce
+	end
+
+	def generate_and_persist_new_entry(cd : ChangelogDatabase)
+		ceg = ChangelogEntryGenerator.new()
+		config = cd.get_config()
+		ce = generate_new_entry(@changelog_database, ceg, config)
+		return ceg.persist(ce, @changelog_database, config )
 	end
 
 	def extract_changelog_entries_from_commits(commits : Array(String))
@@ -54,7 +61,7 @@ class ChangelogMigrator
 				display_findings(log, diff)
 				
 				if (ask_yes_no("Do you want to make an entry for this?"))
-					ce = generate_new_entry(@changelog_database)
+					generate_and_persist_new_entry(@changelog_database)
 				end
 			end
 			last_commit = commit
