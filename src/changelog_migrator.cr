@@ -15,14 +15,32 @@ class ChangelogMigrator
 		extract_changelog_entries_from_commits(commits)
 	end
 
+	def entry_exists?(treeish : String) : Bool
+		file_path = ".changelog_entries/#{treeish}.json"
+		return File.exists? file_path
+	end
+
+	def display_findings(log : String, diff : String)
+		puts log
+		puts "#{"-" * 80}"
+		puts diff.sub(/^[*-]\s+/, "")
+		puts "#{"-" * 80}\nGIVEN THAT..."
+	end
+
+	def generate_new_entry(cd : ChangelogDatabase) : ChangelogEntry
+		ceg = ChangelogEntryGenerator.new()
+		config = cd.get_config()
+		ce = ceg.get_changelog_entry_from_input(@changelog_database, config)
+		return ce
+	end
+
 	def extract_changelog_entries_from_commits(commits : Array(String))
 		commits.unshift(GitIntegration.get_first_commit())
 		last_commit = nil as String?
 		commits.each do |commit|
 			if ! last_commit.nil?
 				# skip it if we did it in a past run
-				file_path = ".changelog_entries/#{commit}.json"
-				if File.exists? file_path
+				if entry_exists? commit
 					last_commit = commit
 					next
 				end
@@ -33,17 +51,10 @@ class ChangelogMigrator
 				log = get_log_for_commit(commit)
 
 
-
-				puts log
-				puts "#{"-" * 80}"
-				puts diff.sub(/^[*-]\s+/, "")
-				puts "#{"-" * 80}\nGIVEN THAT..."
+				display_findings(log, diff)
 				
 				if (ask_yes_no("Do you want to make an entry for this?"))
-
-					ceg = ChangelogEntryGenerator.new()
-					config = @changelog_database.get_config()
-					ce = ceg.get_changelog_entry_from_input(@changelog_database, config)
+					ce = generate_new_entry(@changelog_database)
 				end
 			end
 			last_commit = commit
@@ -62,21 +73,11 @@ class ChangelogMigrator
 	# returns list of commits from oldest to newest
 	def get_changelog_commits() : Array(String)
 		commits = GitIntegration.execute_or_error(
-			"git log --reverse --format=%H CHANGELOG.md",
+			"git log --format=%H CHANGELOG.md",
 			"Unable to retrieve commits to CHANGELOG.md"
 		).chomp
 		return commits.split("\n")
 	end
-
-	# def get_edited_text(text : String) : String
-	# 	tempfile = Tempfile.open("changelog_migrator"){ |file|
-	# 		file.print(text)
-	# 	}
-	# 	system("vi #{tempfile.path}")
-	# 	contents = File.read(tempfile.path)
-	# 	File.delete(tempfile.path)
-	# 	return contents
-	# end
 
 	def get_log_for_commit(commit : String) : String
 		return GitIntegration.execute_or_error(
