@@ -1,8 +1,14 @@
 require "semantic_version"
 require "./git_integration"
+require "./cli_tool"
+
 class ChangelogGenerator
+	include CliTool
+	@config : ChangelogConfig
 	def initialize()
-		
+		changelog_database = get_changelog_db(get_called_from())
+		@config = changelog_database.get_config()
+		# used for the ChangelogEntry objects to know how to calculate urls
 	end
 	def generate( version : String? , with_tags : Set(String))
 		semver_tags = get_semver_tags(version)
@@ -115,11 +121,14 @@ class ChangelogGenerator
 	def select_entries_for_section(section : String, entries : Array(ChangelogEntry))
 		return entries.select{|ce| ce.type == section}
 	end
-	def puts_entries_for_section(section_name : String, entries : Array(ChangelogEntry))
+	def puts_entries_for_section(section_name : String, 
+								 entries : Array(ChangelogEntry))
+
 		if entries.size > 0
 			puts "### #{section_name}"
 			entries.each do |entry|
-				puts "* #{entry.to_md}"
+				puts "* #{entry.to_md(@config)}"
+				# calling @config here feels like a hack
 			end
 			puts ""
 		end
