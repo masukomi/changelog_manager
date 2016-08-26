@@ -20,7 +20,7 @@ class ChangelogEntryGenerator
 		change_type = get_change_type()
 
 		tickets = convert_comma_list_to_array(
-					Readline.readline("Ticket IDs? (Optional, comma separated): ")
+					Readline.readline("Ticket IDs? (Optional, comma separated): ").to_s
 				)
 		url         = nil as String?
 		if tickets.size == 1 && ! config.ticket_url_prefix
@@ -29,12 +29,12 @@ class ChangelogEntryGenerator
 		description = ask_for_non_optional_input("Describe your change: ")
 		# TODO support tags
 		tags    = convert_comma_list_to_array(
-						Readline.readline("Tags (Optional, comma separated): ")
+			Readline.readline("Tags (Optional, comma separated): ").to_s
 					)
 
 		changelog_entry = ChangelogEntry.new(change_type,
 										description,
-										ticket.to_s       == "" ? nil : ticket.to_s,
+										tickets,
 										url.to_s          == "" ? nil : url.to_s,
 										tags)
 		# puts changelog_entry.to_json
