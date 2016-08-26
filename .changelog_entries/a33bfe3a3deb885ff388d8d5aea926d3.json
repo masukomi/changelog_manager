@@ -1,1 +1,1 @@
-{"type":"Fixed","ticket":"12","url":"https://github.com/masukomi/changelog_manager/issues/12","description":"Automatically adds config.json when created / upgraded","tags":[]}
+{"type":"Fixed","description":"Automatically adds config.json when created / upgraded","tags":[],"tickets":["12"],"url":"https://github.com/masukomi/changelog_manager/issues/12"}

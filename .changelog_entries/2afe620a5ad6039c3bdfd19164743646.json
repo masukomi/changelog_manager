@@ -1,1 +1,1 @@
-{"type":"Added","ticket":"3","url":"https://github.com/masukomi/changelog_manager/issues/3","description":"Now can be run as a git hook.","tags":[]}
+{"type":"Added","description":"Now can be run as a git hook.","tags":[],"tickets":["3"],"url":"https://github.com/masukomi/changelog_manager/issues/3"}

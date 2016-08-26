@@ -1,1 +1,1 @@
-{"type":"Added","ticket":"8","url":"https://github.com/masukomi/changelog_manager/issues/8","description":"Now derives ticket urls from the provided ID if possible.","tags":[]}
+{"type":"Added","description":"Now derives ticket urls from the provided ID if possible.","tags":[],"tickets":["8"],"url":"https://github.com/masukomi/changelog_manager/issues/8"}
