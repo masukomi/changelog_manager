@@ -28,5 +28,11 @@ describe CliTool do
 		ctr = CliToolConcrete.new()
 		ctr.get_change_type_questions_string().should(eq(expected))
 	end
+	it "should convert comma separated list to array" do
+		ctr = CliToolConcrete.new()
+		list = "foo, bar , ,, baz"
+		ctr.convert_comma_list_to_array(list).should(eq(
+			["foo", "bar", "baz"]))
+	end
 
 end

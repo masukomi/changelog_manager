@@ -45,6 +45,11 @@ module CliTool
 		return ChangelogEntry::CHANGE_TYPES_HASH[int_change_type]
 	end
 
+	def convert_comma_list_to_array(list : String) : Array(String)
+		return list.to_s.split(/\s*,\s*/).select{|x| !x.nil? && x != ""}
+		# i don't trust them to follow instructions
+	end
+
 	def get_change_type_answers_list() : Array(String)
 		cth = ChangelogEntry::CHANGE_TYPES_HASH
 		sorted_keys = cth.keys.sort[0..(cth.keys.size - 1)]
