@@ -27,4 +27,15 @@ describe ChangelogConfig do
 		cc.git_add.should(eq(false))
 
 	end
+
+	it "should generate an url for a ticket when ticket_url_prefix is set" do
+		cc = ChangelogConfig.new()
+		cc.ticket_url_prefix = "http://foo.com/"
+		cc.url_for_ticket("1234").should(eq("http://foo.com/1234"))
+	end
+
+	it "should not generate an url for a ticket when ticket_url_prefix isn't set" do
+		cc = ChangelogConfig.new()
+		cc.url_for_ticket("1234").should(eq(nil))
+	end
 end

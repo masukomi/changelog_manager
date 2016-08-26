@@ -6,6 +6,14 @@ class ChangelogConfig
 		@git_add = true as Bool
 	end
 
+	def url_for_ticket(ticket : String) : String?
+		if ! @ticket_url_prefix.nil? 
+			return "#{ticket_url_prefix}#{ticket}"
+		else
+			return nil
+		end
+	end
+
 	def handle_overrides( overrides : JSON::Any)
 		@ticket_url_prefix = (overrides["ticket_url_prefix"].to_s rescue nil) || 
 			@ticket_url_prefix
