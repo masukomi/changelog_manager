@@ -36,7 +36,7 @@ class ChangelogGenerator
 
 	def generate_tags_to_entries_hash(semver_tags : Array(String)) : Hash(Array(String), Array(String))
 		tags_to_changelog_entries = {} of Array(String) => Array(String)
-		last_tag : String? = nil
+		last_tag = nil
 		semver_tags.each do |tag|
 			if ! last_tag.nil?
 				tags_to_changelog_entries[[last_tag.to_s, tag]] =
@@ -77,7 +77,7 @@ class ChangelogGenerator
 						 with_tags : Set(String),
 						 tags_to_entries : Hash(Array(String), Array(String)))
 		with_tags_arry = with_tags.to_a
-		last_tag : String? = nil
+		last_tag  = nil # String?
 		semver_tags.each do | tag | 
 			if ! last_tag.nil? 
 				tag_date = ""
