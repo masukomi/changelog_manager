@@ -5,6 +5,7 @@ require "./cli_tool"
 class ChangelogGenerator
 	include CliTool
 	@config : ChangelogConfig
+	HISTORICAL_CHANGELOG_FILENAME= "CHANGELOG.md"
 	def initialize()
 		changelog_database = get_changelog_db(get_called_from())
 		@config = changelog_database.get_config()
@@ -139,8 +140,7 @@ class ChangelogGenerator
 		sub_changelog_files = files.select{|f|
 			f.starts_with?(".changelog_entries") && ! f.ends_with? "config.json"
 		}
-		changelog_md = "CHANGELOG.md"
-		if files.includes? changelog_md
+		if files.includes? HISTORICAL_CHANGELOG_FILENAME
 			# damn it.
 			# Support for oldschool commits to CHANGELOG.md
 			# that have had changelog entries generated for them...possibly
@@ -148,7 +148,7 @@ class ChangelogGenerator
 															   tag_a)
 			hash_to_string_array.keys.each do |treeish|
 				hash_files = hash_to_string_array[treeish]
-				if hash_files.includes? changelog_md
+				if hash_files.includes? HISTORICAL_CHANGELOG_FILENAME
 					sub_changelog_files << ".changelog_entries/#{treeish}.json"
 					# these may, or may not, exist in the filesystem
 				end
