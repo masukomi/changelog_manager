@@ -99,10 +99,10 @@ Delete this line ^^ and everything below it
 			"Unable to retrieve diff for #{treeish_a} #{treeish_b}")
 	end
 
-	# returns list of commits from oldest to newest
+	# returns list of commits from newest to oldest
 	def get_changelog_commits() : Array(String)
 		commits = GitIntegration.execute_or_error(
-			"git log --reverse --format=%H CHANGELOG.md",
+			"git log --format=%H CHANGELOG.md",
 			"Unable to retrieve commits to CHANGELOG.md"
 		).chomp
 		return commits.split("\n")
