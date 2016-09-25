@@ -40,7 +40,11 @@ class ChangelogMigrator
 
 				change_type = get_change_type()
 
-				ce = ChangelogEntry.new(change_type,"",ticket, url, [] of String)
+				ce = ChangelogEntry.new(change_type,  # change type
+										"",           # description
+										[ticket],     # tickets
+										url,          # url
+										[] of String) # tags
 
 				ce = process_commit_data(ce, log, diff, commit, false)
 				exit 0
