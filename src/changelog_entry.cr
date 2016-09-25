@@ -32,7 +32,7 @@ class ChangelogEntry
 	#
 	# ## Returns:
 	# The location where the file was written.
-	def export(cd : ChangelogDatabase, custom_uuid = nil as String?) : String
+	def export(cd : ChangelogDatabase, custom_uuid : String = nil) : String
 		file_path = File.join([cd.found_path.to_s, 
 						 "#{custom_uuid.nil? ? uuid() : custom_uuid}.json"])
 		File.write(file_path, self.to_json)
@@ -43,7 +43,7 @@ class ChangelogEntry
 		Crypto::MD5.hex_digest(self.to_json)
 	end
 
-	def to_md(config = nil as ChangelogConfig?) : String
+	def to_md(config : ChangelogConfig? = nil ) : String
 		md_string = "#{get_tickets_string(config)} #{@description}"
 	end
 
@@ -86,7 +86,7 @@ class ChangelogEntry
 		if ! @url.nil?
 			return @url
 		elsif ! config.nil?
-			return (config as ChangelogConfig).url_for_ticket(ticket)
+			return (config.as(ChangelogConfig)).url_for_ticket(ticket)
 		end
 		return nil
 	end

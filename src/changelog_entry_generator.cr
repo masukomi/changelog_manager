@@ -22,7 +22,7 @@ class ChangelogEntryGenerator
 		tickets = convert_comma_list_to_array(
 					Readline.readline("Ticket IDs? (Optional, comma separated): ").to_s
 				)
-		url         = nil as String?
+		url     = nil #String?
 		if tickets.size == 1 && ! config.ticket_url_prefix
 			url     = Readline.readline("Ticket URL? (optional): ")
 		end

@@ -1,9 +1,11 @@
 require "json"
 class ChangelogConfig
 	getter :ticket_url_prefix, :git_add
+	@ticket_url_prefix : String
+	@git_add : Bool
 	def initialize()
-		@ticket_url_prefix = nil as String?
-		@git_add = true as Bool
+		@ticket_url_prefix = nil
+		@git_add           = true
 	end
 
 	def url_for_ticket(ticket : String) : String?

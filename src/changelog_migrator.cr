@@ -16,7 +16,7 @@ class ChangelogMigrator
 
 	def extract_changelog_entries_from_commits(commits : Array(String))
 		commits.unshift(GitIntegration.get_first_commit())
-		last_commit = nil as String?
+		last_commit = nil#.as(String?)
 		commits.each do |commit|
 			if ! last_commit.nil?
 				# skip it if we did it in a past run
