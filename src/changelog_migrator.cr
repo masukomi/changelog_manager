@@ -38,16 +38,17 @@ class ChangelogMigrator
 				puts diff
 				puts "#{"-" * 80}\nGIVEN THAT..."
 
-				change_type = get_change_type()
+				change_type = get_change_type(false)
 
-				ce = ChangelogEntry.new(change_type,  # change type
-										"",           # description
-										[ticket],     # tickets
-										url,          # url
-										[] of String) # tags
+				if change_type != "Skip"
+					ce = ChangelogEntry.new(change_type,  # change type
+											"",           # description
+											[ticket],     # tickets
+											url,          # url
+											[] of String) # tags
 
-				ce = process_commit_data(ce, log, diff, commit, false)
-				exit 0
+					ce = process_commit_data(ce, log, diff, commit, false)
+				end
 			end
 			last_commit = commit
 		end
