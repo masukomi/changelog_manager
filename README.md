@@ -77,6 +77,7 @@ of abstraction. E.g. To damn geeky. We need to tweak them to make sense to the
 non-geeks consuming the changelog. Sometimes, we just want to fix typos.
 
 If you see a changelog entry that needs adjusting
+
 1. Find the appropriate file in `.changelog_entries` 
 	* If there's a ticken number grep for it.
 	* If not, just grep for a short bit of the changlog entry
