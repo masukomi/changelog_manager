@@ -147,8 +147,10 @@ want to check out.
 
 ## Download a pre-compiled binary
 You can download [changelog_manager for macOS
-here](http://masukomi.org/projects/changelog_manager/changelog_manager.tgz).
-Just decompress it `tar -xzf changelog_manager.tgz` and add it to your path.
+here](https://masukomi.org/projects/changelog_manager/changelog_manager.dmg).
+Open the dmg file and drag `changelog_manager` into a directory in your 
+`PATH` and run the `run_me_first.sh` script.
+
 Then follow the Usage guidelines.
 
 See [troubleshooting](docs/troubleshooting.md) if you have problems with the
