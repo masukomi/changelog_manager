@@ -2,6 +2,17 @@
 
 ## Having problems with your install? 
 
+### Can you system find it? 
+Have you moved it to a directory in your PATH?
+
+`cd` to one of your project directories and run `which changelog_manager`
+
+Did it show up? If so, it's in your PATH. If not, run 
+
+`cp path/to/changelog_manager /usr/local/bin`
+
+### Does it blow up?
+
 Try running the `run_me_first.sh` script in the `bin` directory.
 
 Still having trouble with your install? Check the 
