@@ -68,6 +68,25 @@ want to do with it.
 
 `chagelog_manager -c > CHANGELOG.md`
 
+#### Filtered CHANGELOG.md generation
+
+Changelog entries can be "tagged" with metadata during their creation (think
+tagging bookmarks, not git tags).  For example, if you have a security issue
+that you've fixed but should remain internal only you might tag it with
+"internal" and you might have some items that are specific to one of your
+clients, so you tag those with "client_a" or "client_b". 
+
+Then when you generate the Changelog you can choose which tags should be
+included in the output. The following command would generate a changelog with
+generic (untagged) items, and items tagged with "client_a" but no "internal" or
+"client_b" tags. 
+
+`changelog_manager -c -w client_a  > CHANGELOG.md`
+
+You can specify multiple tags by providing a comma separated list to `-w` for
+example `changelog_manager -c -w internal,awesome`
+
+
 ### Editing an entry
 
 Developers dun awlayz write gud. 
@@ -77,13 +96,13 @@ of abstraction. E.g. To damn geeky. We need to tweak them to make sense to the
 non-geeks consuming the changelog. Sometimes, we just want to fix typos.
 
 If you see a changelog entry that needs adjusting
-
 1. Find the appropriate file in `.changelog_entries` 
 	* If there's a ticken number grep for it.
 	* If not, just grep for a short bit of the changlog entry
 	* `grep "some text" .changelog_entries/*`
 2. Open the file in your favorite text editor, and edit it.
 	* Must remain valid JSON.
+	* Yes, we can, and should [make this easier](https://github.com/masukomi/changelog_manager/issues/18).
 3. Add and Commit the changes to git.
 
 It doesn't matter that the entry was created with an old commit.
