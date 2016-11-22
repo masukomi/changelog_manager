@@ -7,7 +7,9 @@
     { "x": 125, "y": 60, "type": "file", "path": "README.md" },
     { "x": 275, "y": 60, "type": "file", "path": "HELP.md" },
     { "x": 125, "y": 200, "type": "file", "path": "changelog_manager" },
-    { "x": 275, "y": 200, "type": "file", "path": "bin/run_me_first.sh" }
+    { "x": 275, "y": 200, "type": "file", "path": "bin/run_me_first.sh" },
+    { "x": 200, "y": 340, "type": "file", "path": "CHANGELOG.md" }
+
 
   ]
 
