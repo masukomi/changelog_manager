@@ -1,6 +1,24 @@
 [![Build Status](https://travis-ci.org/masukomi/changelog_manager.svg?branch=master)](https://travis-ci.org/masukomi/changelog_manager)
 
-# Changelog Manager
+* [Changelog Manager](#changelog-manager)
+* [Background](#background)
+* [Why not auto-generate them from Commits or PRs?](#why-not-auto-generate-them-from-commits-or-prs)
+* [How It Works](#how-it-works)
+* [Usage](#usage)
+  * [Adding a new entry](#adding-a-new-entry)
+  * [Git Integration](#git-integration)
+     * [New Entries](#new-entries)
+     * [Changelog Generation](#changelog-generation)
+  * [Generating a new CHANGELOG.md](#generating-a-new-changelogmd)
+     * [Filtered CHANGELOG.md generation](#filtered-changelogmd-generation)
+  * [Editing an entry](#editing-an-entry)
+* [Configuration](#configuration)
+* [Installation](#installation)
+* [Download a pre-compiled binary](#download-a-pre-compiled-binary)
+* [Building from source](#building-from-source)
+* [Contributors](#contributors)
+
+## Changelog Manager
 
 Changelog Manager helps you generate a `CHANGELOG.md` file for your Git repo 
 that adheres to the [Keep A Changelog](http://keepachangelog.com/) standard, 
