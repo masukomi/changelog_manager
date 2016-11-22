@@ -16,16 +16,15 @@ class ChangelogMigrator
 
 	def extract_changelog_entries_from_commits(commits : Array(String))
 		commits.push(GitIntegration.get_first_commit())
-		last_commit = nil#.as(String?)
-		commits.each do |commit|
+		commits.each_with_index do |commit, index|
+			last_commit = (index + 1) < commits.size ? commits[index + 1] : nil
 			if ! last_commit.nil?
 				# skip it if we did it in a past run
 				file_path = ".changelog_entries/#{commit}.json"
 				if File.exists? file_path
-					last_commit = commit
 					next
 				end
-				
+
 				diff = get_diff(last_commit.to_s, commit)
 				ticket = get_ticket_from_diff(diff)
 				url = ticket == "" ? "" : get_url_from_diff(ticket, diff)
@@ -50,7 +49,6 @@ class ChangelogMigrator
 					ce = process_commit_data(ce, log, diff, commit, false)
 				end
 			end
-			last_commit = commit
 		end
 		puts "\n\n ALL DONE! Commit the changes!"
 	end
@@ -60,7 +58,7 @@ class ChangelogMigrator
 							diff   : String,
 							commit : String,
 							previous_failure = false) : ChangelogEntry
-		begin 
+		begin
 			text ="#{ce.to_json}#{get_helper_text(log, diff, previous_failure)}"
 
 			json = get_edited_text(text)
