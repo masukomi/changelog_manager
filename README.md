@@ -162,3 +162,4 @@ Checkout [the instructions here](docs/building_from_source.md)
 ## Contributors
 
 - [[masukomi]](https://github.com/masukomi) masukomi - creator, maintainer
+- [[Eric Zell]](https://github.com/EricJZell)
