@@ -1,1 +1,1 @@
-{"type":"Fixed","tickets":[],"description":"This changes the order in which commits are being compared, so that each commit is compared with the previous commit.  ","tags":[]}
+{"type":"Fixed","tickets":[],"description":"This changes the order in which commits are being compared by the migrator, so that each commit is compared with the previous commit.  ","tags":["migrator"]}
