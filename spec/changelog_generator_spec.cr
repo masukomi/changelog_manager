@@ -26,6 +26,14 @@ describe ChangelogGenerator do
 		end
 	end
 
+	describe "choosing valid git tags" do 
+		it "should exclude non semver tags" do
+			test_tags = ["a", "1.2.3", "v1.2.4", "2.4b"]
+			cg = ChangelogGenerator.new()
+			parsed_tags = cg.get_all_semver_tags(test_tags).keys.map{|k|k.to_s}
+			parsed_tags.should(eq(["1.2.3", "1.2.4"]))
+		end
+	end
 	describe "choosing valid entries" do
 		it "should not use entries with unspecified tags" do
 			cg = ChangelogGenerator.new()

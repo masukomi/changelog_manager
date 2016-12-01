@@ -170,15 +170,19 @@ class ChangelogGenerator
 		return result
 	end
 
-	def get_all_semver_tags() : Hash(SemanticVersion, String)
+	def get_all_semver_tags(raw_tags : Array(String) = [] of String) : Hash(SemanticVersion, String)
 		tags = {} of SemanticVersion => String
-		raw_tags = GitIntegration.get_tags()
+		if raw_tags.empty?
+			raw_tags = GitIntegration.get_tags()
+		end
 		raw_tags.each do |tag|
 			if ! tag.match(/^[v0-9]/).nil?
 				new_tag = tag.starts_with?("v") ? tag.sub(/^v/, "") : tag
 				begin 
 					sv = SemanticVersion.parse(new_tag)
 					tags[sv] = tag
+				rescue ArgumentError
+					# Skip it.
 				end # no rescue. don't care.
 			end
 		end

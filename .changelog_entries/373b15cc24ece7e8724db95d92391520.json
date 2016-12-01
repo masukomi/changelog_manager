@@ -1,0 +1,1 @@
+{"type":"Fixed","tickets":[],"description":"No longer throws exception when generating file for repo with non-semver tags","tags":[]}
