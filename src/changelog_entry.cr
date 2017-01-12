@@ -32,7 +32,7 @@ class ChangelogEntry
 	#
 	# ## Returns:
 	# The location where the file was written.
-	def export(cd : ChangelogDatabase, custom_uuid : String = nil) : String
+	def export(cd : ChangelogDatabase, custom_uuid : String? = nil) : String
 		file_path = File.join([cd.found_path.to_s, 
 						 "#{custom_uuid.nil? ? uuid() : custom_uuid}.json"])
 		File.write(file_path, self.to_json)

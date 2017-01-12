@@ -1,3 +1,5 @@
+require "io/memory.cr"
+
 class GitIntegration
 
 	def self.add_file(file_path : String) : Bool
@@ -91,8 +93,8 @@ class GitIntegration
 		end
 	end
 	def self.execute_command(command) : Array(Int32 | String)
-		good_io = MemoryIO.new
-		bad_io = MemoryIO.new
+		good_io = IO::Memory.new
+		bad_io = IO::Memory.new
 		status = Process.run(command, shell: true, 
 					 	 	 output: good_io,
 					 	 	 error: bad_io)
