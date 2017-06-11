@@ -17,7 +17,7 @@ require "./git_integration"
 generate_entry = false
 generate_log = false
 with_tags = Set(String).new
-log_version = uninitialized String
+log_version = nil.as(String?)
 
 OptionParser.parse! do |parser|
 	parser.banner = "Usage: changelog_manager [arguments]"
