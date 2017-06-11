@@ -1,5 +1,5 @@
 require "json"
-require "crypto/md5"
+require "digest/md5"
 
 class ChangelogEntry
 
@@ -40,7 +40,7 @@ class ChangelogEntry
 	end
 	
 	def uuid()
-		Crypto::MD5.hex_digest(self.to_json)
+		Digest::MD5.hexdigest(self.to_json)
 	end
 
 	def to_md(config : ChangelogConfig? = nil ) : String

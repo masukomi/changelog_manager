@@ -37,7 +37,7 @@ class ChangelogGenerator
 
 	def generate_tags_to_entries_hash(semver_tags : Array(String)) : Hash(Array(String), Array(String))
 		tags_to_changelog_entries = {} of Array(String) => Array(String)
-		last_tag = nil
+		last_tag = nil.as(String?)
 		semver_tags.each do |tag|
 			if ! last_tag.nil?
 				tags_to_changelog_entries[[last_tag.to_s, tag]] =
@@ -52,7 +52,7 @@ class ChangelogGenerator
 	def remove_edits(semver_tags : Array(String), tags_to_entries : Hash(Array(String), Array(String))) : Hash(Array(String), Array(String))
 
 		used_entries = Set(String).new()
-		last_tag = nil
+		last_tag = nil.as(String?)
 		# we're going oldest to newest now
 		semver_tags.reverse.each do |tag|
 			if ! last_tag.nil?
@@ -78,7 +78,7 @@ class ChangelogGenerator
 						 with_tags : Set(String),
 						 tags_to_entries : Hash(Array(String), Array(String)))
 		with_tags_arry = with_tags.to_a
-		last_tag  = nil # String?
+		last_tag = nil.as(String?)
 		semver_tags.each do | tag | 
 			if ! last_tag.nil? 
 				tag_date = ""

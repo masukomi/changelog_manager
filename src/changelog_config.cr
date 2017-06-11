@@ -4,7 +4,7 @@ class ChangelogConfig
 	@ticket_url_prefix : String
 	@git_add : Bool
 	def initialize()
-		@ticket_url_prefix = nil
+		@ticket_url_prefix = nil.as(String?)
 		@git_add           = true
 	end
 
