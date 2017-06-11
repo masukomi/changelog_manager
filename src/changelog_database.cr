@@ -2,7 +2,7 @@ require "./changelog_config"
 class ChangelogDatabase
 	getter :found_path
 	def initialize(@launch_dir : String)
-		@found_path = nil as String?
+		@found_path = nil.as(String?)
 	end
 	def create_default_folder()
 		new_found_path = get_possible_entries_path_for_dir(@launch_dir)

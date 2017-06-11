@@ -20,7 +20,7 @@ class ChangelogEntryGenerator
 		change_type = get_change_type()
 
 		ticket      = Readline.readline("Ticket ID? (optional): ")
-		url         = nil as String?
+		url         = nil.as(String?)
 		if ticket.to_s != "" && config.ticket_url_prefix
 			url = config.ticket_url_prefix.to_s + ticket.to_s
 		else

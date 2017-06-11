@@ -1,5 +1,5 @@
 require "json"
-require "crypto/md5"
+require "digest/md5"
 
 class ChangelogEntry
 
@@ -32,7 +32,7 @@ class ChangelogEntry
 	#
 	# ## Returns:
 	# The location where the file was written.
-	def export(cd : ChangelogDatabase, custom_uuid = nil as String?) : String
+	def export(cd : ChangelogDatabase, custom_uuid = nil.as(String?)) : String
 		file_path = File.join([cd.found_path.to_s, 
 						 "#{custom_uuid.nil? ? uuid() : custom_uuid}.json"])
 		File.write(file_path, self.to_json)
@@ -40,7 +40,7 @@ class ChangelogEntry
 	end
 	
 	def uuid()
-		Crypto::MD5.hex_digest(self.to_json)
+		Digest::MD5.hexdigest(self.to_json)
 	end
 
 	def to_md() : String
