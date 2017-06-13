@@ -16,3 +16,5 @@ If you get an error complaning about missing...
 * `pcre` files
 	* `brew install prce` should fix it.
 
+It is my sincere hope that future versions of Crystal-lang will eliminate these
+problems.

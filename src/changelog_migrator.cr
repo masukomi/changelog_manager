@@ -15,17 +15,16 @@ class ChangelogMigrator
 	end
 
 	def extract_changelog_entries_from_commits(commits : Array(String))
-		commits.unshift(GitIntegration.get_first_commit())
-		last_commit = nil as String?
-		commits.each do |commit|
+		commits.push(GitIntegration.get_first_commit())
+		commits.each_with_index do |commit, index|
+			last_commit = (index + 1) < commits.size ? commits[index + 1] : nil
 			if ! last_commit.nil?
 				# skip it if we did it in a past run
 				file_path = ".changelog_entries/#{commit}.json"
 				if File.exists? file_path
-					last_commit = commit
 					next
 				end
-				
+
 				diff = get_diff(last_commit.to_s, commit)
 				ticket = get_ticket_from_diff(diff)
 				url = ticket == "" ? "" : get_url_from_diff(ticket, diff)
@@ -38,14 +37,18 @@ class ChangelogMigrator
 				puts diff
 				puts "#{"-" * 80}\nGIVEN THAT..."
 
-				change_type = get_change_type()
+				change_type = get_change_type(false)
 
-				ce = ChangelogEntry.new(change_type,"",ticket, url, [] of String)
+				if change_type != "Skip"
+					ce = ChangelogEntry.new(change_type,  # change type
+											"",           # description
+											[ticket],     # tickets
+											url,          # url
+											[] of String) # tags
 
-				ce = process_commit_data(ce, log, diff, commit, false)
-				exit 0
+					ce = process_commit_data(ce, log, diff, commit, false)
+				end
 			end
-			last_commit = commit
 		end
 		puts "\n\n ALL DONE! Commit the changes!"
 	end
@@ -55,7 +58,7 @@ class ChangelogMigrator
 							diff   : String,
 							commit : String,
 							previous_failure = false) : ChangelogEntry
-		begin 
+		begin
 			text ="#{ce.to_json}#{get_helper_text(log, diff, previous_failure)}"
 
 			json = get_edited_text(text)
@@ -95,10 +98,10 @@ Delete this line ^^ and everything below it
 			"Unable to retrieve diff for #{treeish_a} #{treeish_b}")
 	end
 
-	# returns list of commits from oldest to newest
+	# returns list of commits from newest to oldest
 	def get_changelog_commits() : Array(String)
 		commits = GitIntegration.execute_or_error(
-			"git log --reverse --format=%H CHANGELOG.md",
+			"git log --format=%H CHANGELOG.md",
 			"Unable to retrieve commits to CHANGELOG.md"
 		).chomp
 		return commits.split("\n")

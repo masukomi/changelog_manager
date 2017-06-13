@@ -30,7 +30,7 @@ module CliTool
 		return input
 	end
 	
-	def get_change_type() : String
+	def get_change_type(quit_on_none = true) : String
 		question_string = get_change_type_questions_string()
 		answers = get_change_type_answers_list
 		int_change_type = ask_until_acceptable(
@@ -39,10 +39,19 @@ module CliTool
 		).to_i
 		# quit if reqested
 		if int_change_type == answers.last.to_i
-			exit 0
+			if quit_on_none
+				exit 0
+			else
+				return "Skip"
+			end
 		end
 		# 
 		return ChangelogEntry::CHANGE_TYPES_HASH[int_change_type]
+	end
+
+	def convert_comma_list_to_array(list : String) : Array(String)
+		return list.to_s.split(/\s*,\s*/).select{|x| !x.nil? && x != ""}
+		# i don't trust them to follow instructions
 	end
 
 	def get_change_type_answers_list() : Array(String)

@@ -26,10 +26,18 @@ describe ChangelogGenerator do
 		end
 	end
 
+	describe "choosing valid git tags" do 
+		it "should exclude non semver tags" do
+			test_tags = ["a", "1.2.3", "v1.2.4", "2.4b"]
+			cg = ChangelogGenerator.new()
+			parsed_tags = cg.get_all_semver_tags(test_tags).keys.map{|k|k.to_s}
+			parsed_tags.should(eq(["1.2.3", "1.2.4"]))
+		end
+	end
 	describe "choosing valid entries" do
 		it "should not use entries with unspecified tags" do
 			cg = ChangelogGenerator.new()
-			ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+			ce = ChangelogEntry.new("Changed", "foo", ["4"], "http://example.com/4",
 										["foo", "bar", "baz"])
 
 			cg.is_usable_entry?(ce, ["beedle"]).should(eq(false))
@@ -37,7 +45,7 @@ describe ChangelogGenerator do
 
 		it "should use entries with specified tags" do
 			cg = ChangelogGenerator.new()
-			ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+			ce = ChangelogEntry.new("Changed", "foo", ["4"], "http://example.com/4",
 										["foo", "bar", "baz"])
 
 			cg.is_usable_entry?(ce, ["bar"]).should(eq(true))
@@ -45,7 +53,7 @@ describe ChangelogGenerator do
 
 		it "should use entries with any tag when no tag specified" do
 			cg = ChangelogGenerator.new()
-			ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+			ce = ChangelogEntry.new("Changed", "foo", ["4"], "http://example.com/4",
 										["foo", "bar", "baz"])
 
 			cg.is_usable_entry?(ce, [] of String).should(eq(true))
@@ -53,7 +61,7 @@ describe ChangelogGenerator do
 
 		it "should use entries with no tags regardless of specified tags" do
 			cg = ChangelogGenerator.new()
-			ce = ChangelogEntry.new("Changed", "foo", "4", "http://example.com/4",
+			ce = ChangelogEntry.new("Changed", "foo", ["4"], "http://example.com/4",
 										[] of String )
 
 			cg.is_usable_entry?(ce, ["foo", "bar", "baz"]).should(eq(true))

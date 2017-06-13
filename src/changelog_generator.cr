@@ -1,8 +1,15 @@
 require "semantic_version"
 require "./git_integration"
+require "./cli_tool"
+
 class ChangelogGenerator
+	include CliTool
+	@config : ChangelogConfig
+	HISTORICAL_CHANGELOG_FILENAME= "CHANGELOG.md"
 	def initialize()
-		
+		changelog_database = get_changelog_db(get_called_from())
+		@config = changelog_database.get_config()
+		# used for the ChangelogEntry objects to know how to calculate urls
 	end
 	def generate( version : String? , with_tags : Set(String))
 		semver_tags = get_semver_tags(version)
@@ -115,11 +122,14 @@ class ChangelogGenerator
 	def select_entries_for_section(section : String, entries : Array(ChangelogEntry))
 		return entries.select{|ce| ce.type == section}
 	end
-	def puts_entries_for_section(section_name : String, entries : Array(ChangelogEntry))
+	def puts_entries_for_section(section_name : String, 
+								 entries : Array(ChangelogEntry))
+
 		if entries.size > 0
 			puts "### #{section_name}"
 			entries.each do |entry|
-				puts "* #{entry.to_md}"
+				puts "* #{entry.to_md(@config)}"
+				# calling @config here feels like a hack
 			end
 			puts ""
 		end
@@ -130,8 +140,7 @@ class ChangelogGenerator
 		sub_changelog_files = files.select{|f|
 			f.starts_with?(".changelog_entries") && ! f.ends_with? "config.json"
 		}
-		changelog_md = "CHANGELOG.md"
-		if files.includes? changelog_md
+		if files.includes? HISTORICAL_CHANGELOG_FILENAME
 			# damn it.
 			# Support for oldschool commits to CHANGELOG.md
 			# that have had changelog entries generated for them...possibly
@@ -139,7 +148,7 @@ class ChangelogGenerator
 															   tag_a)
 			hash_to_string_array.keys.each do |treeish|
 				hash_files = hash_to_string_array[treeish]
-				if hash_files.includes? changelog_md
+				if hash_files.includes? HISTORICAL_CHANGELOG_FILENAME
 					sub_changelog_files << ".changelog_entries/#{treeish}.json"
 					# these may, or may not, exist in the filesystem
 				end
@@ -161,15 +170,19 @@ class ChangelogGenerator
 		return result
 	end
 
-	def get_all_semver_tags() : Hash(SemanticVersion, String)
+	def get_all_semver_tags(raw_tags : Array(String) = [] of String) : Hash(SemanticVersion, String)
 		tags = {} of SemanticVersion => String
-		raw_tags = GitIntegration.get_tags()
+		if raw_tags.empty?
+			raw_tags = GitIntegration.get_tags()
+		end
 		raw_tags.each do |tag|
 			if ! tag.match(/^[v0-9]/).nil?
 				new_tag = tag.starts_with?("v") ? tag.sub(/^v/, "") : tag
 				begin 
 					sv = SemanticVersion.parse(new_tag)
 					tags[sv] = tag
+				rescue ArgumentError
+					# Skip it.
 				end # no rescue. don't care.
 			end
 		end

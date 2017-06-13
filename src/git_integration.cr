@@ -1,3 +1,5 @@
+require "io/memory.cr"
+
 class GitIntegration
 
 	def self.add_file(file_path : String) : Bool
