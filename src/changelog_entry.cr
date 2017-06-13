@@ -76,7 +76,7 @@ class ChangelogEntry
 	# the following lets us ingest and expel json
 	JSON.mapping({
 		type:        String,
-		tickets:     Array(String),
+		tickets:     {type: Array(String), default: [] of String},
 		url:         {type: String, nilable: true},
 		description: String,
 		tags:        Array(String)
