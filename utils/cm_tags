@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# outputs the list of files in .changelog_entries along with the description
+# contain in each one.
+# useful for finding one to edit / remove.
+if [ -e ".changelog_entries" ]; then
+  grep -r --color=none tags .changelog_entries/* |\
+    sed -e 's/^.*tags":\[//'  -e 's/\].*//'  -e 's/"//g' \
+    -e 's/^[[:space:]]*$//' -e '/^$/d' -e 's/[[:space:]]/\n/g' |\
+    sort |\
+    uniq |\
+    tr '\n' ',' |\
+    sed -e 's/,$//' -e 's/,/, /g'
+else
+  echo "please run me from the directory containing .changelog_entries"
+  exit 1
+fi
