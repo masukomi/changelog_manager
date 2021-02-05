@@ -1,0 +1,10 @@
+version: 2.0
+shards:
+  json_mapping:
+    git: https://github.com/crystal-lang/json_mapping.cr.git
+    version: 0.1.0
+
+  readline:
+    git: https://github.com/crystal-lang/crystal-readline.git
+    version: 0.1.0
+

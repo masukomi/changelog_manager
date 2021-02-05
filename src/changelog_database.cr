@@ -63,7 +63,8 @@ class ChangelogDatabase
 		dirs = @launch_dir.split(File::SEPARATOR_STRING)
 		last_index = dirs.size() -1
 		(0..last_index).each do | idx |
-			path = File.join(dirs[0..(last_index - idx)])
+			path = File::SEPARATOR_STRING + File.join([""] + dirs[0..(last_index - idx)])
+
 			if dir_contains_dot_changelog_entries(path)
 				@found_path = get_possible_entries_path_for_dir(path)
 				return @found_path

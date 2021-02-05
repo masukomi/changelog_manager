@@ -19,7 +19,7 @@ generate_log = false
 with_tags = Set(String).new
 log_version = nil.as(String?)
 
-OptionParser.parse! do |parser|
+OptionParser.parse do |parser|
 	parser.banner = "Usage: changelog_manager [arguments]"
 	parser.on("-c", "--compile", "Generate CHANGELOG.md for all entries") { 
 		generate_log = true }

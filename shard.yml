@@ -9,3 +9,9 @@ description: |
   A tool for managing Changelog files within a git repo.
 
 license: MIT
+
+dependencies:
+  readline:
+    github: crystal-lang/crystal-readline
+  json_mapping:
+    github: crystal-lang/json_mapping.cr

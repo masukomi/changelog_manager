@@ -13,7 +13,6 @@
 	* [Editing an entry](#editing-an-entry)
 	* [Configuration](#configuration)
 * [How To Get It](#how-to-get-it)
-	* [Download a pre-compiled binary](#download-a-pre-compiled-binary)
 	* [Building from source](#building-from-source)
 * [What you should put in it](#what-you-should-put-in-it)
 	* [What's not a good Changelog entry](#whats-not-a-good-changelog-entry)
@@ -133,17 +132,8 @@ Changelog Manager [some optional configurations](docs/configuration.md) you will
 want to check out.
 
 ## How To Get It
-
-### Download a pre-compiled binary
-You can download [changelog_manager for macOS
-here](https://masukomi.org/projects/changelog_manager/changelog_manager.dmg).
-Open the dmg file and drag `changelog_manager` into a directory in your 
-`PATH` and run the `run_me_first.sh` script.
-
-Then follow the "[How To Use It](#how_to_use_it)" guidelines.
-
-See [troubleshooting](docs/troubleshooting.md) if you have problems with the
-downloaded binary.
+Unfortunately, right now the best way is to build from source. Homebrew install
+coming (hopefully) soon.
 
 ### Building from source
 
