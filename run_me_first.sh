@@ -13,7 +13,7 @@ function confirm {
 }
 
 echo "Crystal lang is still pretty young, and we're seeing occasional"
-echo "problems with linked libraries. This will brew install any missing ones."
+echo "problems with linked libraries. This will \"brew install\" any missing ones."
 echo ""
 
 
@@ -34,31 +34,33 @@ if [ "$homebrew" == "" ]; then
 fi
 
 
-bdw_gc=`brew ls --versionns bdw-gc`
+bdw_gc=`brew ls --versions bdw-gc`
 libevent=`brew ls --versions libevent`
 pcre=`brew ls --versions pcre`
 
 if [ "$bdw_gc" == "" ]; then
-	echo "\xE2\x98\x90 bwd-gc NOT found"
+	echo "❌ bwd-gc NOT found"
 	confirm && brew install bdw-gc
 else
-	echo "\xE2\x98\x91 bwd-gc found"
+	echo "✅ bwd-gc found"
 fi
 
 if [ "$libevent" == "" ]; then
-	echo "\xE2\x98\x90 libevent NOT found"
+	echo "❌ libevent NOT found"
 	confirm && brew install libevent
 else
-	echo "\xE2\x98\x91 libevent found"
+	echo "✅ libevent found"
 fi
 
 if [ "$pcre" == "" ]; then
-	echo "\xE2\x98\x90 pcre NOT found"
+	echo "❌ pcre NOT found"
 	confirm && brew install pcre
 else
-	echo "\xE2\x98\x91 pcre found"
+	echo "✅ pcre found"
 fi
 
 echo ""
 echo "My work is done here."
-echo "Please contact @masukomi on twitter if you have any problems."
+echo "Please contact me if you have any problems:"
+echo "@masukomi@connectified.com on Mastodon"
+echo "@masukomi on Twitter"
