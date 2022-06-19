@@ -1,5 +1,6 @@
 require "json"
 require "digest/md5"
+require "json_mapping"
 
 class ChangelogEntry
 

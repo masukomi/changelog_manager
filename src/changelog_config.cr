@@ -1,4 +1,6 @@
 require "json"
+require "json_mapping"
+
 class ChangelogConfig
 	getter :ticket_url_prefix, :git_add
 	@ticket_url_prefix : String
@@ -28,6 +30,9 @@ class ChangelogConfig
 	end
 
 	# the following lets us ingest and expel json
+	# DEPRECATED
+	# should be rewritten using JSON::Serializable
+	# functionality provided by `json_mapping` macro
 	JSON.mapping({
 		ticket_url_prefix:  {type: String, nilable: true},
 		git_add: {type: Bool, default: true}
