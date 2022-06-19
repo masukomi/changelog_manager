@@ -12,7 +12,7 @@
 		* [Filtered CHANGELOG.md generation](#filtered-changelogmd-generation)
 	* [Editing an entry](#editing-an-entry)
 	* [Configuration](#configuration)
-* [How To Get It](#how-to-get-it)
+* [How To Get It & Installation](#how-to-get-it)
 	* [Building from source](#building-from-source)
 * [What you should put in it](#what-you-should-put-in-it)
 	* [What's not a good Changelog entry](#whats-not-a-good-changelog-entry)
@@ -20,11 +20,13 @@
 * [How it works](#how-it-works)
 * [Contributors](#contributors)
 
+
 ## Why Use It
 
 Changelog Manager helps you generate a `CHANGELOG.md` file for your Git repo 
 that adheres to the [Keep A Changelog](http://keepachangelog.com/) standard, 
 and doesn't result in almost constant conflicts.
+
 
 ### Background
 There are tons of great reasons to [Keep A Changelog](http://keepachangelog.com/). 
@@ -137,7 +139,25 @@ coming (hopefully) soon.
 
 ### Building from source
 
-Checkout [the instructions here](docs/building_from_source.md)
+Changelog Manager is written in Crystal so, you'll need to 
+[install the Crystal compiler](http://crystal-lang.org/). 
+
+The `run_me_first.sh` script will take care of installing that, and the libraries it needs if you're on a system with homebrew. If not it'll list what you need. 
+
+
+1. Clone this repo.
+2. on the command line run `./run_me_first.sh`
+  * if you're on a system without homebrew, you'll need to manually install the libraries it tells you it needs.
+3. on the command line run `./build.sh`
+
+This will generate a `changelog_manager` executable in the current directory.
+
+Put the new `changelog_manager` file somewhere in your
+path. Here's [how to add a directory to your path](http://unix.stackexchange.com/a/26059/124338). Or, if you just run `echo $PATH` on the command line you can simply
+move `changelog_manager` to any of the directories in that list (that you have
+write access to).
+
+That's it. 
 
 ## What you should put in it
 
