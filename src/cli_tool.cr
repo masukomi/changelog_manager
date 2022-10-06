@@ -4,7 +4,8 @@ require "./changelog_database"
 module CliTool
 	def ask_until_acceptable(message,
 							valid_responses : Array(String)) : String
-		input = Readline.readline(message).to_s
+		STDOUT.puts(message);
+		input = Readline.readline("").to_s
 		if valid_responses.includes? input
 			return input
 		end
