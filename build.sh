@@ -30,4 +30,3 @@ else
   echo "Please go to https://crystal-lang.org/ to find"
   echo "the best installation means for your system."
 fi
-
