@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-command -v shards
+command -v shards > /dev/null
 shards=$?
-command -v crystal
+command -v crystal > /dev/null
 crystal=$?
 if [ $shards -eq 0 ] && [ $crystal -eq 0 ]; then
   echo "installing depenencies..."
