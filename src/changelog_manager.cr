@@ -30,7 +30,7 @@ or more of the specified tags. Takes a comma separated list (no spaces)."
 								with_tags = Set.new(tags)}
 	parser.on("-v VERSION", 
 				"--to=VERSION", 
-				"Generates CHANGELOG.md for specific version"
+				"Generates CHANGELOG.md for specific version. Note: if this version doesn't exist it's assumed to be the tag you're about to create."
 			 ) { |version| log_version = version }
 	
 	parser.on("-h", "--help", "Show this help") { 

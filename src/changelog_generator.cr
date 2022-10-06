@@ -13,7 +13,7 @@ class ChangelogGenerator
 	end
 	def generate( version : String? , with_tags : Set(String))
 		semver_tags = get_semver_tags(version)
-		process_changelog_files(semver_tags, with_tags)
+		process_changelog_files(semver_tags, with_tags, version)
 	end
 	def puts_header(version : String?)
 		puts "# Changelog\n"
@@ -21,7 +21,7 @@ class ChangelogGenerator
 			puts "## Unreleased\n"
 		end
 	end
-	def process_changelog_files(semver_tags : Array(String), with_tags : Set(String))
+	def process_changelog_files(semver_tags : Array(String), with_tags : Set(String), for_version : String|Nil)
 
 		first_commit = GitIntegration.get_first_commit()
 		#FIXME... won't catch changelog in first commit
@@ -32,7 +32,7 @@ class ChangelogGenerator
 		tags_to_changelog_entries = remove_edits(semver_tags,
 												 tags_to_changelog_entries)
 		
-		generate_entries(semver_tags, with_tags, tags_to_changelog_entries)
+		generate_entries(semver_tags, with_tags, tags_to_changelog_entries, for_version)
 	end
 
 	def generate_tags_to_entries_hash(semver_tags : Array(String)) : Hash(Array(String), Array(String))
@@ -74,17 +74,21 @@ class ChangelogGenerator
 	end
 
 
-	def generate_entries(semver_tags : Array(String), 
-						 with_tags : Set(String),
-						 tags_to_entries : Hash(Array(String), Array(String)))
+	def generate_entries(semver_tags		: Array(String),
+						 with_tags			: Set(String),
+						 tags_to_entries	: Hash(Array(String), Array(String)),
+						 for_version		: String|Nil)
 		with_tags_arry = with_tags.to_a
 		last_tag = nil.as(String?)
 		semver_tags.each do | tag | 
-			if ! last_tag.nil? 
+			if ! last_tag.nil? #not the first commit
 				tag_date = ""
 				if last_tag != "HEAD"
 					tag_date = GitIntegration.get_tag_date(last_tag).sub(/T.*/, "")
 					puts "## [#{last_tag.sub(/^v/, "")}] - #{tag_date}"
+				elsif for_version
+					tag_date = Time.local.to_s("%F")
+					puts "## [#{for_version}] - #{tag_date}"
 				else
 					puts "## [Unreleased]"
 				end
@@ -196,6 +200,7 @@ class ChangelogGenerator
 		valid_semver.each do | vs | 
 			limited_tags[vs] = tags[vs]
 		end
+
 		return limited_tags
 	end
 end
