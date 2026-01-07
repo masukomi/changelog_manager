@@ -34,6 +34,30 @@ describe ChangelogGenerator do
 			parsed_tags.should(eq(["1.2.3", "1.2.4"]))
 		end
 	end
+
+	describe "#limit_tags" do
+		it "should allow lower case v prefix on valid semantic version" do
+			#tags = {} of SemanticVersion => String
+			tags = {
+				SemanticVersion.parse("1.0.0") => "v1.0.0",
+				SemanticVersion.parse("2.0.0") => "v2.0.0"
+			}
+			cg = ChangelogGenerator.new()
+			limited_tags = cg.limit_tags(tags, "v1.1.0")
+			limited_tags.values.should(eq(["v1.0.0"]))
+		end
+		it "should allow upper-case V prefix on valid semantic version" do
+			#tags = {} of SemanticVersion => String
+			tags = {
+				SemanticVersion.parse("1.0.0") => "v1.0.0",
+				SemanticVersion.parse("2.0.0") => "v2.0.0"
+			}
+			cg = ChangelogGenerator.new()
+			limited_tags = cg.limit_tags(tags, "V1.1.0")
+			limited_tags.values.should(eq(["v1.0.0"]))
+
+		end
+	end
 	describe "choosing valid entries" do
 		it "should not use entries with unspecified tags" do
 			cg = ChangelogGenerator.new()

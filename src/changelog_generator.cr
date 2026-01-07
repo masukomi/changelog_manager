@@ -165,7 +165,7 @@ class ChangelogGenerator
 	def get_semver_tags(version : String?) : Array(String)
 		tags = get_all_semver_tags() # Hash(SemanticVersion, String)
 		if ! version.nil?
-			tags = limit_tags(tags, version.to_s)
+			tags = limit_tags(tags, version.to_s.sub(/^[vV]/, ""))
 		end
 		result = [] of String
 		tags.keys.sort.reverse.each do | sv | 
@@ -193,9 +193,10 @@ class ChangelogGenerator
 		return tags
 	end
 
-	def limit_tags(tags : Hash(SemanticVersion, String), version : String) : Hash(SemanticVersion, String)
+	def limit_tags(tags : Hash(SemanticVersion, String), version_limit : String) : Hash(SemanticVersion, String)
 		limited_tags = {} of SemanticVersion => String
-		limit = SemanticVersion.parse(version)
+		cleaned_version_limit = version_limit.sub(/^[vV]/, "")
+		limit = SemanticVersion.parse(cleaned_version_limit)
 		valid_semver = tags.keys.select{|x| x <= limit}
 		valid_semver.each do | vs | 
 			limited_tags[vs] = tags[vs]
