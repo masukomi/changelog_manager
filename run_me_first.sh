@@ -3,7 +3,7 @@
 function confirm {
   read -r -p "Can I install it?" response
   case $response in
-      [yY][eE][sS]|[yY]) 
+      [yY][eE][sS]|[yY])
           true
           ;;
       *)
@@ -72,6 +72,6 @@ echo "My work is done here."
 echo "Run ./build.sh to build the changelog manager tools"
 echo ""
 echo ""
-echo "Please contact me if you have any problems:"
-echo "@masukomi@connectified.com on Mastodon"
-echo "@masukomi on Twitter"
+echo "Please contact me on the Fediverse if you have any problems:"
+echo "@masukomi@connectified.com"
+echo "https://connectified.com/@masukomi"
