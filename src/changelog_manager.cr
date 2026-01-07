@@ -49,8 +49,10 @@ end
 
 
 # the following is to compensate for a weird Crystal bug
-# https://github.com/crystal-lang/crystal/issues/2065
-STDOUT.blocking = true
-STDERR.blocking = true
+# https://github.com/crystal-lang/crystal/issues/2713
+# I'm not sure if it's actually required anymore,
+# but it shouldn't hurt so I'm leaving it.
+IO::FileDescriptor.set_blocking(STDOUT.fd, true)
+IO::FileDescriptor.set_blocking(STDERR.fd, true)
 
 exit(0)
