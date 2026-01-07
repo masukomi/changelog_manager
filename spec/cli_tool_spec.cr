@@ -10,7 +10,7 @@ describe CliTool do
 	
 
 	it "should get_change_type_answers_list" do
-		expected = (1..8).map{|x|x.to_s}
+		expected = (1..9).map{|x|x.to_s}
 		ctr = CliToolConcrete.new()
 		ctr.get_change_type_answers_list().should(eq(expected))
 	end
@@ -21,10 +21,11 @@ describe CliTool do
 3 - Fixed
 4 - Deprecated
 5 - Removed
-6 - Security
-7 - Unspecified
-8 - Quit. No entry please.
-[1, 2, 3, 4, 5, 6, 7, 8]: "
+6 - Documented
+7 - Security
+8 - Unspecified
+9 - Quit. No entry please.
+[1, 2, 3, 4, 5, 6, 7, 8, 9]: "
 		ctr = CliToolConcrete.new()
 		ctr.get_change_type_questions_string().should(eq(expected))
 	end

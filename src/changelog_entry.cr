@@ -9,13 +9,14 @@ class ChangelogEntry
 	FIXED       = "Fixed"
 	DEPRECATED  = "Deprecated"
 	REMOVED     = "Removed"
+	DOCUMENTED  = "Documented"
 	SECURITY    = "Security"
 	UNSPECIFIED = "Unspecified"
 	# ^^^ Used when migrating poor data commited to CHANGELOG.md files
 	CHANGE_TYPES_ARRAY = [
-		ADDED, CHANGED, FIXED, DEPRECATED, REMOVED, SECURITY, UNSPECIFIED
+		ADDED, CHANGED, FIXED, DEPRECATED, REMOVED, DOCUMENTED, SECURITY, UNSPECIFIED
 	]
-	CHANGE_TYPES_HASH = Hash.zip((1..7).to_a, CHANGE_TYPES_ARRAY)
+	CHANGE_TYPES_HASH = Hash.zip((1..CHANGE_TYPES_ARRAY.size).to_a, CHANGE_TYPES_ARRAY)
 	getter :type, :description, :tickets, :url, :tags
 	setter :type, :description, :tickets, :url, :tags
 	def initialize(@type        : String,
